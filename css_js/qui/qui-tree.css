@@ -1,0 +1,204 @@
+  /*******************************/
+ /* Стили компонента QUI - Tree */
+/*******************************/
+
+/* Стили основного контейнера */
+.quiTree{
+	background-color:	#fff;
+	border:				1px solid #99bbe8;
+	border-top:			none;
+
+	-moz-user-select:	none;
+	user-select:		none;
+	overflow:			auto;
+
+	width:				250px;
+	height:				400px;
+
+	padding-top:		5px;
+	padding-right:		5px;
+	padding-bottom:		5px;
+	padding-left:		18px;
+
+/*	margin-top:			3px;*/
+	margin-right:		3px;
+	margin-bottom:		3px;
+	margin-left:		3px;
+	clear:				both;
+}
+.quiTreeHead{
+	height:21px;
+	margin-right:		2px;
+	margin-left:		3px;
+}
+.quiTreeRL{
+	background-color:	#f5f9fe;
+	overflow:			hidden;
+	border:				1px solid #99bbe8;
+	border-bottom:		none;
+	border-right:		none;
+	height:				20px;
+	float:				left;
+	width:				auto;
+	padding-left:		5px;
+}
+.quiTreenodeName{
+	color:				#15428b;
+	font-weight:		bold;
+	font-size:			11px;
+	line-height:		21px;
+	overflow:			hidden;
+	white-space:		nowrap;
+}
+.quiTreeBTN{
+	width:44px;
+	float:right;
+	margin-top:-23px;
+}
+.quiTreeAddN{
+	height:22px;
+	width:22px;
+	background-image:	url(../resources/tree/add.gif);
+	float:right;
+}
+.quiTreeExitF{
+	height:22px;
+	width:22px;
+	background-image:	url(../resources/tree/exit.gif);
+	float:left;
+}
+.quiTree ul{
+	padding-left:		0px;
+}
+.quiTree li{
+	font-family:		Arial, Helvetica, sans-serif;
+	font-size:			11px;
+	margin-left:		0px;
+	padding-left:		15px;
+	white-space:		nowrap;
+}
+.quiTreeNode{
+	height:				16px;
+	position:			relative;
+}
+.quiArrowTree{
+	background-image:	url(../resources/tree/arrows.gif);
+	background-position:-4px 0px;
+	background-repeat:	no-repeat;
+	position:			absolute;
+	width:				12px;
+	height:				16px;
+	margin-left:		-28px;
+}
+.quiIconTree{
+	background-image:	url(../resources/tree/icons.gif);
+	background-position:left 0px;
+	background-repeat:	no-repeat;
+	height:				16px;
+	margin-left:		-16px;
+	margin-right:		3px;
+	padding-left:		18px;
+}
+.quiLabelTree{
+	border:				1px solid #fff;
+	padding-left:		2px;
+	padding-right:		2px;
+	height:				16px;
+	line-height:		16px;
+}
+.quiLabelTree.hover{
+	border:				1px dotted #99bbe8;
+}
+.quiLabelTree.active{
+	border:				1px solid #99bbe8;
+}
+.quiDraggedTree{
+	filter:				alpha(opacity=80);
+	opacity:			0.8;
+	position:			absolute;
+	width:				300px;
+}
+.quiLineTree{
+	height:				3px;
+	margin-left:		-5px;
+	font-size:			2px;
+}
+.quiLineTreehover{
+	background-image:	url(../resources/tree/line.gif);
+	background-position:left 0px;
+	background-repeat:	no-repeat;
+	height:				3px;
+}
+.quiDisabled{
+	opacity:			0.2;
+}
+
+.quiTreeCM {
+	position:			absolute;
+	width:				120px;
+	z-index:			99999;
+	border:				solid 1px #CCC;
+	background:			#EEE;
+	padding:			0px;
+	margin:				0px;
+	display:			none;
+}
+
+.quiTreeCM LI {
+	list-style:			none;
+	padding:			0px;
+	margin:				0px;
+}
+
+.quiTreeCM span {
+	color:				#333;
+	text-decoration:	none;
+	display:			block;
+	line-height:		20px;
+	height:				20px;
+	background-position:6px center;
+	background-repeat:	no-repeat;
+	outline:			none;
+	padding:			1px 5px;
+	padding-left:		28px;
+}
+.quiTreeCM LI.hover span {
+	color:				#FFF;
+	width:				87px;
+	background-color:	#3399FF;
+}
+
+.quiTreeCM LI.disabled span {
+	color:				#AAA;
+	width:				87px;
+	cursor:				default;
+}
+
+.quiTreeCM LI.hover.disabled span {
+	background-color:	transparent;
+	width:				87px;
+}
+
+.quiTreeCM LI.separator {
+	border-top:			solid 1px #CCC;
+	width:				87px;
+}
+
+/*
+	Adding Icons
+	
+	You can add icons to the context menu by adding
+	classes to the respective LI element(s)
+*/
+.quiTreeCM LI.editCM span {
+	background-image:	url(../resources/tree/cm.edit.png);
+}
+.quiTreeCM LI.deleteCM span {
+	background-image:	url(../resources/tree/cm.delete.png);
+}
+.quiTreeCM LI.addCM span {
+	background-image:	url(../resources/tree/cm.add.png);
+}
+.quiTreeCM LI.openCM span {
+	background-image:	url(../resources/tree/cm.open.png);
+}

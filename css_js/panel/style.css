@@ -1,0 +1,418 @@
+#uploaderDIV{
+	margin: 10px;
+}
+body{
+/*	background-color:#4A99D5;*/
+	background-color: #FFFFFF;
+	color:#000000;
+	font-family:Arial;
+	font-size:10pt;
+	line-height:normal;
+	margin:0px;
+	padding:0px;
+}
+
+/* Стили авторизации */
+#DIVheadAuth{
+	padding:10px;
+	padding-bottom: 0px;
+	color: #FFFFFF;
+	background-color: #000000;
+	text-align: center;
+}
+
+#DIVcontentAuth{
+	padding:10px;
+	background-color: #4A99D5;
+	color: #ffffff;
+	text-align: center;
+	line-height: 26px;
+	border-bottom:1px #000000 solid;
+	border-top:1px #000000 solid;
+	border-left:1px #000000 solid;
+	border-right:1px #000000 solid;
+}
+
+#DIVauth{
+	width: 300px;
+	height: 133px;
+	left: 300px;
+	top: 400px;
+	position: absolute;
+}
+
+.inputAuth{
+	border: 1px #FFFFFF solid;
+	background-color: #4A99D5;
+	color: #ffffff;
+	width: 150px;
+}
+
+.btnAuth{
+	border: 1px #FFFFFF solid;
+	background-color: #74b8ec;
+	color: #ffffff;
+}
+
+.DIVinputLabel{
+	float: left;
+}
+
+.DIVinputText{
+	float: right;
+}
+
+.DIVinput{
+	width: 210px;
+	padding-left:35px;
+}
+/* Стили авторизации конец */
+
+a:link{
+	color:#FFFFFF;
+}
+a:visited{
+	color:#FFFFFF;
+}
+a:hover{
+	color:#F0F0EE;
+}
+a:active{
+	color:#FF00FF;
+}
+
+.linkMenu{
+	padding: 5px;
+	background-color: #4A99D5;
+	color: #FFFFFF;
+}
+
+#DIVheadAll{
+	height: 35px;
+	color: #FFFFFF;
+	background-color: #000000;
+}
+
+#DIVhead{
+	padding:10px;
+	padding-bottom: 0px;
+	color: #FFFFFF;
+	background-color: #000000;
+	float: left;
+}
+
+.systemLink:link{
+	color:#FFFFFF;
+	text-decoration: none;
+}
+.systemLink:visited{
+	color:#FFFFFF;
+	text-decoration: none;
+}
+.systemLink:hover{
+	color:#D0D0D0;
+	text-decoration: underline;
+}
+.systemLink:active{
+	color:#FF00FF;
+}
+
+#DIVrightHead{
+	float: right;
+	padding: 10px;
+	margin-right:10px;
+	color: #D0D0D0;
+}
+
+#DIVmenu{
+	clear: both;
+	color: #FFFFFF;
+	padding:10px;
+	padding-bottom: 7px;
+	background-color: #4A99D5;
+}
+
+.DIVheader{
+	color: #4A99D5;
+	background-color: #FFFFFF;
+	padding: 5px;
+	border: 1px #C8C8C8 solid;
+	margin-bottom: 5px;
+}
+
+#DIVtree{
+	position: absolute;
+	left:0px;
+	padding:5px;
+	padding-right:0px;
+	overflow: hidden;
+	width:20%;
+	height:700px;
+	background-color: #FFFFFF;
+}
+
+#DIVcontent{
+	margin-left:20%;
+	padding: 5px;
+	padding-left: 15px;
+	height:700px;
+	background-color: #FFFFFF;
+}
+
+#DIVcontentAll{
+	height: 700px;
+	padding:5px;
+	overflow: auto;
+	background-color: #FFFFFF;
+}
+
+#DIVfooter{
+	padding:5px;
+	clear:both;
+	background-color: #4A99D5;
+	color: #FFFFFF;
+}
+
+H1{
+	font-size:15pt;
+	text-decoration: none;
+	font-weight: bold;
+}
+
+H2{
+	font-size:13pt;
+	text-decoration: none;
+	font-weight: bold;
+}
+
+H3{
+	font-size:11pt;
+	text-decoration: none;
+	font-weight: bold;
+}
+
+/* Стили для диалогов редактирования */
+#CMS_notify{
+	position:		absolute;
+	width:			140px;
+	height:			35px;
+	background:		#efefef;
+	z-index:		300000;
+	text-align:		center;
+	padding:		30px;
+	padding-top:	0px;
+	padding-bottom:	0px;
+	line-height:	35px;
+	left:			500px;
+	display:		none;
+}
+
+.value{
+	color: #000066;
+}
+
+
+
+#createSettings {
+	clear: both;
+}
+
+
+.settingEdit{
+	width: 80px;
+}
+
+.imgBTN{
+	border: 0px;
+	display:block;
+	float: left;
+	margin-top:3px;
+}
+
+.edit{
+	display:block;
+	clear: both;
+	line-height: 20px;
+	width:550px;
+	height:25px;
+	border: none;
+	
+	padding-top: 3px;
+}
+
+.name_section{
+	float: left;
+}
+
+.component{
+	width:702px;
+	height:26px;
+	border: none;
+}
+
+.WYSIWYG{
+	margin-top:15px;
+	height:auto;
+	border: none;
+}
+.mceEditor{
+	width:		696px;
+}
+.structure{
+	display:block;
+	height:24px;
+	line-height: 20px;
+	border-bottom: 1px solid #cccccc;
+}
+
+.name_section{
+  border: 0px;
+  float: left;
+  line-height:	25px;
+}
+
+.link{
+	border: 0px;
+	float:right;
+	line-height:25px;
+}
+
+/* Стили страницы статистики */
+
+.stat{
+	text-align: left;
+	clear:both;
+	width:850px;
+}
+
+.statLink{
+	text-align: right;
+}
+
+#statBrowser{
+	width:400px;
+	float: left;
+	text-align: left;
+}
+
+#statOS{
+	width:400px;
+	float: right;
+	text-align: left;
+}
+
+/* Стили полей редактирования */
+
+.varchar{
+	width:477px;
+}
+
+#editArea{
+	height: 98%;
+	width: 99%;
+}
+
+.memo{
+	width:456px;
+	height:48px;
+}
+
+.select{
+	width:460px;
+}
+
+/* Стили кнопок управления */
+
+.delChildAttr {
+  background-image:url("images/panel.remove.png");
+  background-repeat: no-repeat;
+  padding-left: 15px;
+  text-decoration:none;
+}
+
+.editChildAttr {
+  background-image:url("images/panel.edit.png");
+  background-repeat: no-repeat;
+  padding-left: 15px;
+  padding-top: 1px;
+  text-decoration:none;
+}
+
+.delChildClass {
+  background-image:url("images/panel.remove.png");
+  background-repeat: no-repeat;
+  padding-left: 15px;
+  text-decoration:none;
+}
+
+.deleteRule {
+  background-image:url("images/panel.remove.png");
+  background-repeat: no-repeat;
+  padding-left: 15px;
+  text-decoration:none;
+}
+
+.settingsClass {
+  background-image:url("images/panel.settings.png");
+  background-repeat: no-repeat;
+  padding-left: 15px;
+  text-decoration:none;
+}
+
+/*Индикаторы загрузки*/
+
+#tree_loader{
+	display: none;
+	height: 100px;
+	background-image: url("images/tree.loader.gif");
+	background-repeat: no-repeat;
+	background-position: 49% 50px;
+}
+
+#DIVloader{
+	margin-left:20%;
+	padding: 5px;
+	padding-left: 15px;
+	overflow: auto;
+	height:700px;
+	background-color: #FFFFFF;
+	display: none;
+	background-image: url("images/tree.loader.gif");
+	background-repeat: no-repeat;
+	background-position: 51% 340px;
+}
+
+/* Стили модуля Базовые Классы */
+
+.smallHeader{
+	color: #FFFFFF;
+	background-color: #4A99D5;
+	padding: 5px;
+	padding-bottom: 7px;
+	padding-top: 10px;
+}
+
+.smallContent{
+	padding: 5px;
+}
+
+.selector{
+	padding: 5px;
+	background-color: #4A99D5;
+	color: #FFFFFF;
+}
+
+.editContent{
+	width: 100%;
+	height: 665px;
+	overflow: auto;	
+}
+.editContent2{
+	width: 100%;
+	height: 633px;
+	overflow: auto;	
+}
+
+#rootSel{
+	width:100%; 
+}

@@ -1,0 +1,26 @@
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{padding:0;border:0;outline:0;vertical-align:baseline;background:transparent;cursor:default;margin:0;}html{height:100%;width:100%}body{width:100%;cursor:default;line-height:1;color:#fff;background:black}:focus{outline:0}ol,ul{list-style:none}table{border-collapse:collapse;border-spacing:0;border-top:0;border-bottom:0;border-left:0;border-right:0}table td{border-top:0;border-bottom:0;border-left:0;border-right:0}caption,th,td{text-align:left;font-weight:400}blockquote:before,blockquote:after,q:before,q:after{content:""}blockquote,q{quotes:"" ""}a{cursor:pointer}
+
+body{
+	background-color:#dee8f6;
+	color:#000;
+}
+
+
+.checkImg{
+	position:absolute;
+	top:0px;
+	left:0px;
+}
+
+#bbody{
+	margin-top:0px;
+	margin-left:0px;
+	margin-right:0px;
+	margin-bottom:0px;
+}
+
+.cleaner{
+	width:0px;
+	height:0px;
+	font-size:1px;
+}
