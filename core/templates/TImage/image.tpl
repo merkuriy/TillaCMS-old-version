@@ -1,0 +1,1 @@
+<img src="../data/images/%path%.jpg" alt="%title%" /><br />

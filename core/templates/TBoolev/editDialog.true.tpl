@@ -1,0 +1,1 @@
+<option value="false" selected="selected">Неактивен</option><option value="true">Активен</option>

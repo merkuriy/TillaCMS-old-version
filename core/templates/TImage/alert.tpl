@@ -1,0 +1,1 @@
+<span style="color:#FF0000">Нет файла: ../data/images/%path%.jpg</span><br />

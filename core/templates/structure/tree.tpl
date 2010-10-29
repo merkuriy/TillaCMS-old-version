@@ -1,0 +1,1 @@
+[{id:'%id%',label:'%title%', items:[%childNode%]}]
