@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Q UI - набор компонентов для создания пользовательских интерфейсов
  * Компонент - Дерево
  * @author Andrew Yudin (Andrew Judis Pasarian, pasarian@gmail.com)
@@ -203,7 +203,7 @@ jQuery.tree = function(options){
 			// Если объект закрытая папка, то откраваем её
 			}else if(tp.parent('li').hasClass('folder')){
 				tp.children('.quiIconTree').css("background-position", "0px 0px");
-				tp.children('.quiIconTree').css("background-image", "url(/css_js/resources/ajax-loader.gif)");
+				tp.children('.quiIconTree').css("background-image", "url(/css_js/resources/tree/ajax-loader.gif)");
 				// Если дочерние элементы получаются через AJAX запускаем механизм получения
 				if (tp.parent('li').children('ul').hasClass('ajax')) {
 					j.getJSON(tp.parent('li').children('ul').attr('url'),
@@ -258,7 +258,7 @@ jQuery.tree = function(options){
 								if (ndp.parent('li').children('ul').hasClass('ajax')) {
 									// Выставляем иконку загрузки
 									nd.parent().css("background-position", "0px 0px");
-									nd.parent().css("background-image", "url(/css_js/resources/ajax-loader.gif)");
+									nd.parent().css("background-image", "url(/css_js/resources/tree/ajax-loader.gif)");
 									// Отправляем запрос на сервер
 									j.getJSON(ndp.parent('li').children('ul').attr('url'),
 										// Обрабатываем полученные данные
