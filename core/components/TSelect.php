@@ -92,7 +92,7 @@ class components_TSelect{
 	//=====================================
 	//Функция вывода данных
 	function view($name,$parentId,$param=''){
-		components_TSelect::createTable();
+		//components_TSelect::createTable();
 		$data_child_element=sys::sql("SELECT `data` FROM `prefix_TSelect` WHERE `name`='$name' AND `parent_id`='$parentId';",0);
 		if (mysql_num_rows($data_child_element)==0) {
 			return '';

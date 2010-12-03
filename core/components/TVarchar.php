@@ -68,7 +68,7 @@ class components_TVarchar{
 	//=====================================
 	//Функция вывода данных
 	function view($name,$parentId,$param=''){
-		components_TVarchar::createTable();
+		//components_TVarchar::createTable();
 		$data_child_element=sys::sql("SELECT `data` FROM `prefix_TVarchar` WHERE `name`='$name' AND `parent_id`='$parentId';",0);
 		if (mysql_num_rows($data_child_element)==0) {
 			return '';

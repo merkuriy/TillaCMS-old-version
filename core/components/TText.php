@@ -65,7 +65,7 @@ class components_TText{
 	//=====================================
 	//Функция вывода данных
 	function view($name,$parentId,$param=''){
-		components_TText::createTable();
+		//components_TText::createTable();
 		$data_child_element=sys::sql("SELECT `data` FROM `prefix_TText` WHERE `name`='$name' AND `parent_id`='$parentId';",0);
 		if (mysql_num_rows($data_child_element)==0) {
 			return '';

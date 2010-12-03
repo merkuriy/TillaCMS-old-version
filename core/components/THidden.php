@@ -79,7 +79,7 @@ class components_THidden {
 	//=====================================
 	//Функция вывода данных
 	function view($name,$parentId,$param=''){
-		components_THidden::createTable();
+		//components_THidden::createTable();
 		$data_child_element=sys::sql("SELECT `data` FROM `prefix_THidden` WHERE `name`='$name' AND `parent_id`='$parentId';",0);
 		if (mysql_num_rows($data_child_element)==0) {
 			return '';

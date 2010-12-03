@@ -64,7 +64,7 @@ class components_TBoolev{
 	//=====================================
 	//Функция вывода данных
 	function view($name,$parentId,$param=''){
-		components_TBoolev::createTable();
+		//components_TBoolev::createTable();
 		$data_child_element=sys::sql("SELECT `data` FROM `prefix_TBoolev` WHERE `name`='$name' AND `parent_id`='$parentId';",0);
 		if (mysql_num_rows($data_child_element)==0) {
 			return '';

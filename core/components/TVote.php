@@ -77,7 +77,7 @@ class components_TVote{
 	//=====================================
 	//Функция вывода данных
 	function view($name,$parentId,$param=''){
-		components_TVote::createTable();
+		//components_TVote::createTable();
 		$data_child_element=sys::sql("SELECT `data` FROM `prefix_TVote` WHERE `name`='$name' AND `parent_id`='$parentId';",0);
 		if (mysql_num_rows($data_child_element)==0) {
 			return '3';

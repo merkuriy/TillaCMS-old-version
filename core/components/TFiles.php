@@ -84,7 +84,7 @@ class components_TFiles{
 	//=====================================
 	//Функция вывода данных
 	function view($name,$parentId,$param=''){
-		components_TFiles::createTable();
+		//components_TFiles::createTable();
 		$data_child_element=sys::sql("SELECT `data` FROM `prefix_TFiles` WHERE `name`='$name' AND `parent_id`='$parentId';",0);
 		if (mysql_num_rows($data_child_element)==0) {
 			$out = '';
