@@ -238,85 +238,178 @@ class components_TImage{
 	//=====================================
 	//Функция вывода данных
 	function view($name,$parentId,$param=''){
-		components_TImage::createTable();
-		$par=explode('-', $param);
-		if (count($par)==2){
-			$param=$par[0];
-			$dop=$par[1];
-		} else {
-			$param=$par[0];
+		
+		global $system;
+		
+		//components_TImage::createTable();
+		
+		list($param, $dop) = explode('-', $param);
+		
+		
+		
+		//Если раздела и базового класса нет в кеше получаем их
+		if (empty($system['section'][$parentId]) ){
+			modules_structure_view::newSection();
 		}
-		$data_child_element=sys::sql("SELECT `id` FROM `prefix_TImage` WHERE `name`='$name' AND `parent_id`='$parentId';",0);
-		$parent_class=mysql_result(sys::sql("SELECT `base_class` FROM `prefix_Sections` WHERE `id`='$parentId';",0),0);
-		$image_class=mysql_result(sys::sql("SELECT `id` FROM `prefix_ClassSections` WHERE `parent_id`='$parent_class' AND `name`='$name';",0),0);
+		
+		//Если настроек атрибута базового класса нет в кеше получаем их из базы
+		if (empty(
+				$system['classSection'][
+					$system['section'][$parentId]['base_class']
+				]['settings.'.$name]
+			)
+		){
+			$settings = sys::sql("
+				SELECT
+					settings.`psevdo` psevdo,
+					settings.`path` path
+				FROM
+					`prefix_ClassSections` baseClass,
+					`prefix_ImageSettings` settings
+				WHERE
+					baseClass.`parent_id` = ".$system['section'][$parentId]['base_class']." AND
+					baseClass.`name` = '$name' AND
+					baseClass.`id` = settings.`parent_id` 
+			;", 1);
+			
+			foreach( $settings as $val ){
+				$system['classSection'][
+					$system['section'][$parentId]['base_class']
+				]['settings.'.$name][
+					$val['psevdo']
+				]['path'] = $val['path'];
+			}
+		}
+		
+		
+		//если псевдо параметр имени не задан, получаем первый в списке псевдо имён
 		if ($param==''){
-			$param=mysql_result(sys::sql("SELECT `psevdo` FROM `prefix_ImageSettings` WHERE `parent_id`='$image_class' LIMIT 1;",0),0);
+			reset(
+				$system['classSection'][
+					$system['section'][$parentId]['base_class']
+				]['settings.'.$name]
+			);
+			
+			$param = key($system['classSection'][
+				$system['section'][$parentId]['base_class']
+			]['settings.'.$name]);
 		}
-		$path_none=mysql_result(sys::sql("SELECT `path` FROM `prefix_ImageSettings` WHERE `psevdo`='$param' AND `parent_id`='$image_class';",0),0);
-		if (mysql_num_rows($data_child_element)==0) {
-			if ($path_none==''){
-				$out='';
-			}else{
-				$out='/data/images/'.$path_none;
-			}
-		} else {
-			$file='../data/images/'.mysql_result($data_child_element,0).$param.'.jpg';
-			if (file_exists($file)){
-				$out=str_replace("..", "", $file);
-			} else {
-				if ($path_none==''){
-					$out='';
-				}else{
-					$out='/data/images/'.$path_none;
-				}
-			}
+		
+		//Получаем путь к изображению заменителю пустышки
+		$path_none = $system['classSection'][
+				$system['section'][$parentId]['base_class']
+			]['settings.'.$name][$param]['path'];
+		
+		
+		
+		//Получаем id изображения
+		$data_child_element = mysql_result(
+			sys::sql("
+				SELECT `id`
+				FROM `prefix_TImage`
+				WHERE `name`='$name' AND `parent_id`='$parentId'
+			;",0) ,0 
+		);
+		
+		/**/
+		
+		
+		
+		/*
+		if ( isset($system['section'][$parentId]) ){
+			$sqlFrom = '';
+			$sqlWhere = 'baseClass.`parent_id` = '.$system['section'][$parentId]['base_class'].' AND ';
+			
+			
+		}else{
+			$sqlFrom = '`prefix_Sections` section,';
+			$sqlWhere = '
+				section.`id` = '.$parentId.' AND
+				section.`base_class = `baseClass.`parent_id` AND
+			';
 		}
-		if ($dop=='filesize'){
-			if ($out!=''){
-				$file='..'.$out;
-				$size=filesize($file)/1048576;
-				$out=substr($size, 0, strpos($size, ".")+3);
-			}else{
-				$out='0';
-			}
+		
+		
+		if ($param){
+			$sqlWhere .= 'settings.`psevdo` = "'.$param.'" AND ';
 		}
-		if ($dop=='width'){
-			if ($out!=''){
-				$file='..'.$out;
-				$type=substr($file, strlen($file)-3, 3);
-				if ($type=='jpg'){
-					$img=ImageCreateFromJpeg($file);
+		
+		
+		list($data_child_element, $path_none, $param) = mysql_fetch_row(sys::sql("
+			SELECT
+				tImage.`id` id,
+				settings.`path` path,
+				settings.`psevdo` psevdo
+			FROM
+				$sqlFrom
+				`prefix_TImage` tImage,
+				`prefix_ClassSections` baseClass,
+				`prefix_ImageSettings` settings
+			WHERE
+				$sqlWhere
+				
+				tImage.`name` = '$name' AND
+				tImage.`parent_id` = $parentId AND	
+				
+				baseClass.`name` = '$name' AND
+				
+				settings.`parent_id` = baseClass.`id`
+				
+			LIMIT 1
+		;", 0));
+		/**/
+		
+		
+		
+		
+		
+		$file='../data/images/'.$data_child_element.$param.'.jpg';
+		
+		if (!file_exists($file))
+			if ($path_none)
+				$out = '../data/images/'.$path_none;
+			else
+				return false;
+		
+		
+		switch ($dop) {
+			case 'filesize':
+				
+				return round( filesize($file) / 1048576, 2);
+				
+			case 'width':
+				
+				$type = substr($file, -3);
+				
+				switch ( $type ){
+					case 'jpg':
+						return imagesx( ImageCreateFromJpeg($file));
+					case 'gif':
+						return imagesx( ImageCreateFromGif($file));
+					case 'png':
+						return imagesx( ImageCreateFromPNG($file));
 				}
-				if ($type=='gif'){
-					$img=ImageCreateFromGif($file);
+				
+				return false;
+				
+			case 'height':
+				
+				$type = substr($file, -3);
+				
+				switch ( $type ){
+					case 'jpg':
+						return imagesy( ImageCreateFromJpeg($file));
+					case 'gif':
+						return imagesy( ImageCreateFromGif($file));
+					case 'png':
+						return imagesy( ImageCreateFromPNG($file));
 				}
-				if ($type=='png'){
-					$img=ImageCreateFromPNG($file);
-				}
-				$out=imagesx($img);
-			}else{
-				$out='0';
-			} 
+				
+				return false;
 		}
-		if ($dop=='height'){
-			if ($out!=''){
-				$file='..'.$out;
-				$type=substr($file, strlen($file)-3, 3);
-				if ($type=='jpg'){
-					$img=ImageCreateFromJpeg($file);
-				}
-				if ($type=='gif'){
-					$img=ImageCreateFromGif($file);
-				}
-				if ($type=='png'){
-					$img=ImageCreateFromPNG($file);
-				}
-				$out=imagesy($img);
-			}else{
-				$out='0';
-			}
-		}
-		return $out;
+		
+		
+		return substr($file, 2);
 	}
 
 
