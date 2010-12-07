@@ -18,7 +18,7 @@ class components_TVarchar{
 
 		$SEND['title'] = $title;
 		$SEND['name'] = $name;
-		$SEND['data'] = $data['data'];
+		$SEND['data'] = htmlspecialchars($data['data']);
 
 		$out = admin::draw('TVarchar/editDialog',$SEND);
 
@@ -35,7 +35,7 @@ class components_TVarchar{
       $POST['parentId']=$POST['parent_id'];
       components_TVarchar::createStr($POST);
     }
-		$result = sys::sql("UPDATE `prefix_TVarchar` SET `data` = '".htmlspecialchars($POST['data'])."' WHERE `name`='".$POST['dataName']."' AND `parent_id`='".$POST['parent_id']."';",0);
+		$result = sys::sql("UPDATE `prefix_TVarchar` SET `data` = '".$POST['data']."' WHERE `name`='".$POST['dataName']."' AND `parent_id`='".$POST['parent_id']."';",0);
 		if ($param=='client'){return;} else {}
 	}
 
@@ -69,10 +69,13 @@ class components_TVarchar{
 	//Функция вывода данных
 	function view($name,$parentId,$param=''){
 		//components_TVarchar::createTable();
+		
 		$data_child_element=sys::sql("SELECT `data` FROM `prefix_TVarchar` WHERE `name`='$name' AND `parent_id`='$parentId';",0);
+		
 		if (mysql_num_rows($data_child_element)==0) {
 			return '';
 		} else {
+			if( $param == 'html' ) return htmlspecialchars( mysql_result($data_child_element,0) );
 			return mysql_result($data_child_element,0);
 		}
 	}
