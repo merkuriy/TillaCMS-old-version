@@ -8,7 +8,9 @@
 class components_TMultiUpLoad{
 	function edit($name,$parentId,$title){
 		$SEND['id']=$parentId;
-		$out = admin::draw('TMultiUpLoad/page.link',$SEND);
+		$SEND['title'] = $title;
+		$SEND['name'] = $name;
+		$out = admin::draw('TMultiUpLoad/editDialog',$SEND);
 		return $out;
 	}
 	function save($POST,$FILES, $param=''){}
@@ -21,7 +23,7 @@ class components_TMultiUpLoad{
 	//===================================
 	// Диалог мульти загрузки фотографий
 	function load($id){
-
+/*
 		$query = mysql_result(sys::sql("SELECT `id` FROM `prefix_ClassSections` WHERE `name`='user' AND `type`='type';",0),0);
 		$users = sys::sql("SELECT `id`,`name` FROM `prefix_Sections` WHERE `base_class`='$query'",0);
 		while($row = mysql_fetch_array($users)){
@@ -37,13 +39,16 @@ class components_TMultiUpLoad{
 		$SEND['pageID'] = $id;
 		$SEND['javascript'] = admin::draw('TMultiUpLoad/java',$DATA);
 
-		echo admin::draw('TMultiUpLoad/page',$SEND);
+		echo admin::draw('TMultiUpLoad/page',$SEND);*/
 	}
 
 
 	//===============================================
 	// функция добавления файлов через мультизагрузку
-	function saveFile($id,$FILES,$author=''){
+	function saveFile($id,$FILES,$name=''){
+		
+		$namer = explode('_',$name);
+		
 		$sql = sys::sql("SELECT
 							sect1.`name`+1 ind
 						FROM
@@ -63,11 +68,13 @@ class components_TMultiUpLoad{
 		$POST['parent'] = $id;
 		$POST['name'] = $name;
 		$POST['title'] = $name;
-		
-		$POST['parent_name'] = 'foto';
-		$POST['type'] = '5';
+		// Базовый класс картинки
+		$POST['parent_name'] = $namer[0];
+
 		$id=modules_structure_admin::addElementSCR($POST,'','client');
+
 		unset($POST);
+
 		$POST['name'] = $name;
 		$POST['title'] = $name;
 		$POST['id']=$id;
@@ -76,10 +83,10 @@ class components_TMultiUpLoad{
 		} else {
 			$POST['author_id']=$author;
 		}
-		$POST['countReads']='0';
-		$POST['tpl_Section']='page_photo/main';
-		$FILES['image']=$FILES["Filedata"];
-		$FILES['image']['type']='image/jpeg';
+		// Имя компонента картинки
+		$FILES[$namer[1]]=$FILES["file"];
+		$FILES[$namer[1]]['type']='image/jpeg';
+
 		$i=modules_structure_admin::editElementSCR($POST,$FILES,'client');
 	}
 }

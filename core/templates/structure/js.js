@@ -3,7 +3,20 @@
 	<script type="text/javascript" src="/css_js/jquery/jquery.timers.js"></script>
 	<script type="text/javascript" src="/css_js/jquery/jquery.form.js"></script>
 	<script type="text/javascript" src="/css_js/jquery/jquery.copy.min.js"></script>
-	
+
+	<script type="text/javascript" src="/css_js/plupload/gears_init.js"></script>
+	<script type="text/javascript" src="http://bp.yahooapis.com/2.4.21/browserplus-min.js"></script>
+	<script type="text/javascript" src="/css_js/plupload/plupload.js"></script>
+	<script type="text/javascript" src="/css_js/plupload/plupload.gears.js"></script>
+	<script type="text/javascript" src="/css_js/plupload/plupload.silverlight.js"></script>
+	<script type="text/javascript" src="/css_js/plupload/plupload.flash.js"></script>
+	<script type="text/javascript" src="/css_js/plupload/plupload.browserplus.js"></script>
+	<script type="text/javascript" src="/css_js/plupload/plupload.html5.js"></script>
+	<script type="text/javascript" src="/css_js/plupload/jquery.plupload.queue.js"></script>
+
+	<script type="text/javascript" src="/css_js/plupload/plupload.full.js"></script>
+	<script type="text/javascript" src="/css_js/plupload/jquery.plupload.queue.js"></script>
+
 	<script type="text/javascript" src="/css_js/tiny_mce/jquery.tinymce.js"></script>
 
 	<script type="text/javascript">

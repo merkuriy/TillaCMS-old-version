@@ -21,7 +21,7 @@ class modules_structure_admin{
 		if ($GET['action']=='editElementSCR'){modules_structure_admin::editElementSCR($POST,$FILES,$GET['author']);}
 		if ($GET['action']=='deleteElement'){modules_structure_admin::deleteElement($GET['id'],$GET['author']);}
 		if ($GET['action']=='uploader'){components_TMultiUpLoad::load($GET['id']);}
-		if ($GET['action']=='multiSave'){components_TMultiUpLoad::saveFile($GET['pageid'],$FILES,$GET['author']);}
+		if ($GET['action']=='multiSave'){components_TMultiUpLoad::saveFile($GET['pageid'],$FILES,$GET['name']);}
 		if ($GET['action']=='updatePosition'){modules_structure_admin::updatePosition($GET['id'],$GET['parent'],$GET['pos']);}
 		if ($GET['action']=='getParent'){modules_structure_admin::getParent($GET['id']);}
 	}

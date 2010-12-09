@@ -14,7 +14,7 @@
 		@import "../css_js/qui/qui-tree.css";
 		/*]]>*/
 	</style>
-
+	<link rel="stylesheet" href="/css_js/plupload/plupload.queue.css" type="text/css" media="screen" />
 	
 
 	%js%
