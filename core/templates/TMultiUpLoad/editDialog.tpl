@@ -17,7 +17,7 @@
 				extensions: "jpg"
 			}],
 	        max_file_size : '10mb', 
-	        chunk_size : '1mb', 
+	        chunk_size : '1mb',
 			flash_swf_url : '/css_js/plupload/plupload.flash.swf'
 		})
 		.find('div.plupload_header_title').text('%title% (%name%):');
