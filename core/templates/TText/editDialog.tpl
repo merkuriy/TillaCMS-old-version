@@ -1,9 +1,7 @@
-<div class="name_section">
+
+<div class="name_section_block">
 	%title% (%name%):
 </div>
-<div class="component">
-	<div class="link">
-		<textarea name="%name%" class="memo">%data%</textarea>
-	</div>
-</div>
-<br /><br />
+<textarea name="%name%" class="ttext">%data%</textarea>
+
+<br/>

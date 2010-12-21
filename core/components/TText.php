@@ -8,22 +8,56 @@
 class components_TText{
 	
 	//=====================================
+	//Функция вывода данных
+	function view($name, $parentId, $param=''){
+		$data_child_element=sys::sql("SELECT `data` FROM `prefix_TText` WHERE `name`='$name' AND `parent_id`='$parentId';",0);
+		
+		if (mysql_num_rows($data_child_element))
+			return mysql_result($data_child_element,0);
+		
+		return '';
+	}
+	
+	
+	//=====================================
 	//Функция вывода на редактирование
-	function edit($name,$parentId,$title){
+	function edit($name, $parentId, $title){
 		components_TText::createTable();
-		$data_child_element=sys::sql("SELECT `id`,`data` FROM `prefix_TText` WHERE `name`='$name' AND `parent_id`='$parentId';",0);
-		$data=mysql_fetch_array($data_child_element);
+		
+		$data = sys::sql("
+			SELECT
+				text.`data` data,
+				settings.`type` type
+			FROM
+				`prefix_TText` text,
+				`prefix_Sections` sections,
+				`prefix_ClassSections` class
+				LEFT JOIN
+					`prefix_TTextSettings` settings
+				ON
+					settings.`id` = class.`id`
+			WHERE
+				text.`name` = '$name' AND
+				text.`parent_id` = $parentId AND
+				
+				sections.`id` = text.`parent_id` AND
+				
+				class.`parent_id` = sections.`base_class` AND
+				class.`name` = '$name'
+		;", 1);
 
-		$SEND['title'] = $title;
-		$SEND['name'] = $name;
-		$SEND['data'] = $data['data'];
+		$SEND = array(
+			'title' => $title,
+			'name' => $name,
+			'data' => $data[0]['data']
+		);
+		
 
-		if ($name=='Link'){
-			$out = admin::draw('TText/editDialog',$SEND);
-		}else{
-			$out = admin::draw('TText/editDialogWYSIWYG',$SEND);
-		}
-		return $out;
+		if ($data[0]['type'])
+			return admin::draw('TText/editDialog', $SEND);
+		
+		return admin::draw('TText/editDialogWYSIWYG', $SEND);
+		
 	}
 
 
@@ -60,33 +94,10 @@ class components_TText{
 
 		$result = sys::sql("DELETE FROM `prefix_TText` WHERE `parent_id` = '$id' AND `name` = '$name' LIMIT 1;",0);
 	}
+	
 
 
-	//=====================================
-	//Функция вывода данных
-	function view($name,$parentId,$param=''){
-		//components_TText::createTable();
-		$data_child_element=sys::sql("SELECT `data` FROM `prefix_TText` WHERE `name`='$name' AND `parent_id`='$parentId';",0);
-		if (mysql_num_rows($data_child_element)==0) {
-			return '';
-		} else {
-			return mysql_result($data_child_element,0);
-		}
-	}
-
-
-	//=====================================
-	//Функция Создания таблицы для хранения данных
-	function createTable(){
-		$query=sys::sql("
-			CREATE TABLE IF NOT EXISTS `prefix_TText` (
-				`id` int(11) NOT NULL auto_increment,
-				`name` varchar(255) NOT NULL,
-				`parent_id` int(11) NOT NULL,
-				`data` text,
-				PRIMARY KEY  (`id`)
-			) ENGINE=MyISAM AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_general_ci AUTO_INCREMENT=1 ;",0);
-	}
+	
 
 
 	//=====================================
@@ -94,5 +105,76 @@ class components_TText{
 	function condition($name,$parentId,$cond){
 		return false;
 	}
+	
+	
+	
+	//=====================================
+	// Функция настроек
+	function editSettings($id){
+		components_TText::createTable();
+		
+		$SEND = sys::sql("SELECT `type` FROM `prefix_TTextSettings` WHERE `id`='$id';",1);
+		
+		if (count($SEND) &&  $SEND[0]['type'] )
+			$SEND['type'] = 'selected="selected"';
+		else
+			$SEND['type'] = '';
+		
+		$SEND['parent'] = mysql_result(
+			sys::sql("SELECT
+						`parent_id`
+					FROM
+						`prefix_ClassSections`
+					WHERE
+						`id` = '$id'
+			;",0)
+		,0);
+		
+		$SEND['id'] = $id;
+		$SEND['js'] = 'TText/editRuleDialog.js';
+		
+		echo admin::draw('TText/editRuleDialog',$SEND);
+		
+	} 
+
+
+	//=====================================
+	// Функция сохранения настроек
+	function saveSettings($id, $POST){
+		components_TText::createTable();
+		
+		sys::sql("
+			INSERT INTO `prefix_TTextSettings` (`id`,`type`)
+			VALUES ($id,'".$POST['type']."')
+			ON DUPLICATE KEY UPDATE `type`='".$POST['type']."';
+		;",0);
+		
+		echo 'Сохранение прошло успешно!';
+	}  
+	
+	
+	
+	//=====================================
+	//Функция Создания таблицы для хранения данных
+	function createTable(){
+		sys::sql("
+			CREATE TABLE IF NOT EXISTS `prefix_TText` (
+				`id` int(11) NOT NULL auto_increment,
+				`name` varchar(255) NOT NULL,
+				`parent_id` int(11) NOT NULL,
+				`data` text,
+				PRIMARY KEY  (`id`)
+			) ENGINE=MyISAM AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_general_ci
+		;",0);
+		
+		sys::sql("
+			CREATE TABLE IF NOT EXISTS `prefix_TTextSettings` (
+				`id` int(11) NOT NULL auto_increment,
+				`type` TINYINT NOT NULL,
+				PRIMARY KEY  (`id`)
+			) ENGINE=MyISAM AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_general_ci
+		;",0);
+	}
+	
 }
 ?>

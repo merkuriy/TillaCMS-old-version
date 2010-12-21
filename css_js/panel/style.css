@@ -240,20 +240,19 @@ H3{
 	padding-top: 3px;
 }
 
-.name_section{
-	float: left;
-}
-
 .component{
 	width:702px;
 	height:26px;
 	border: none;
 }
 
-.WYSIWYG{
-	margin-top:15px;
-	height:auto;
-	border: none;
+.ttext {
+	display: block;
+	
+	width: 696px;
+	height: 111px;
+	
+	font-size: 12px;
 }
 .mceEditor{
 	width:		696px;
@@ -265,11 +264,15 @@ H3{
 	border-bottom: 1px solid #cccccc;
 }
 
-.name_section{
-  border: 0px;
-  float: left;
-  line-height:	25px;
+.name_section {
+	border: 0px;
+	float: left;
+	line-height:	25px;
 }
+.name_section_block {
+	padding: 3px 0;
+}
+
 
 .link{
 	border: 0px;

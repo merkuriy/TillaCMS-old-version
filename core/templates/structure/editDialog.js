@@ -82,7 +82,7 @@
 			
 			
 			
-			$('textarea').tinymce({
+			$('textarea.wisiwyg').tinymce({
 				// Location of TinyMCE script
 				script_url : '/css_js/tiny_mce/tiny_mce.js',
 	

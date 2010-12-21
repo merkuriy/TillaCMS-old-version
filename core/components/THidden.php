@@ -12,7 +12,21 @@ class components_THidden {
 		'abstractChild' => '',
 		'abstractParent' => ''
 	);
-
+	
+	
+	//=====================================
+	//Функция вывода данных
+	function view($name,$parentId,$param=''){
+		
+		$data_child_element=sys::sql("SELECT `data` FROM `prefix_THidden` WHERE `name`='$name' AND `parent_id`='$parentId';",0);
+		
+		if (mysql_num_rows($data_child_element))
+			return mysql_result($data_child_element,0);
+		
+		return '';
+	}
+	
+	
 	
 	//=====================================
 	//Функция вывода на редактирование
@@ -74,20 +88,7 @@ class components_THidden {
 		components_THidden::createTable();
 		$result = sys::sql("DELETE FROM `prefix_THidden` WHERE `parent_id` = '$id' AND `name` = '$name' LIMIT 1;",0);
 	}
-
-
-	//=====================================
-	//Функция вывода данных
-	function view($name,$parentId,$param=''){
-		//components_THidden::createTable();
-		$data_child_element=sys::sql("SELECT `data` FROM `prefix_THidden` WHERE `name`='$name' AND `parent_id`='$parentId';",0);
-		if (mysql_num_rows($data_child_element)==0) {
-			return '';
-		} else {
-			return mysql_result($data_child_element,0);
-		}
-	}
-
+	
 
 	//=====================================
 	//Функция Создания таблицы для хранения данных
@@ -152,7 +153,9 @@ class components_THidden {
 	//=====================================
 	// Функция настроек
 	function editSettings($id){
-
+		
+		components_THidden::createTable();
+		
 		$value=sys::sql("SELECT `value` FROM `prefix_THidden_Settings` WHERE `parent_id`='$id';",0);
 
 		if (mysql_num_rows($value)>0){

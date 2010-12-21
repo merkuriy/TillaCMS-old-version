@@ -6,6 +6,19 @@
  *	Компонент хранения числового значения
  */
 class components_TInteger{
+
+
+	//=====================================
+	//Функция вывода данных
+	function view($name,$parentId,$param=''){
+		$data_child_element=sys::sql("SELECT `data` FROM `prefix_TInteger` WHERE `name`='$name' AND `parent_id`='$parentId';",0);
+		
+		if (mysql_num_rows($data_child_element))
+			return mysql_result($data_child_element,0);
+		
+		return '';
+	}
+	
 	
 	//=====================================
 	//Функция вывода на редактирование
@@ -56,19 +69,6 @@ class components_TInteger{
 	//Функция удаления записи
 	function deleteAttr($name,$id){
 		$result = sys::sql("DELETE FROM `prefix_TInteger` WHERE `parent_id` = '$id' AND `name` = '$name' LIMIT 1;",0);
-	}
-
-
-	//=====================================
-	//Функция вывода данных
-	function view($name,$parentId,$param=''){
-		//components_TInteger::createTable();
-		$data_child_element=sys::sql("SELECT `data` FROM `prefix_TInteger` WHERE `name`='$name' AND `parent_id`='$parentId';",0);
-		if (mysql_num_rows($data_child_element)==0) {
-			return '';
-		} else {
-			return mysql_result($data_child_element,0);
-		}
 	}
 
 

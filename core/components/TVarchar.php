@@ -7,6 +7,24 @@
  */
 class components_TVarchar{
 	
+
+	//=====================================
+	//Функция вывода данных
+	function view($name,$parentId,$param=''){
+		
+		$data_child_element=sys::sql("SELECT `data` FROM `prefix_TVarchar` WHERE `name`='$name' AND `parent_id`='$parentId';",0);
+		
+		if (mysql_num_rows($data_child_element)) {
+			if( $param == 'html' )
+				return htmlspecialchars( mysql_result($data_child_element,0) );
+			
+			return mysql_result($data_child_element,0);
+		}
+		
+		return '';
+	}
+
+
 	//=====================================
 	//Функция вывода на редактирование
 	function edit($name,$parentId,$title){
@@ -63,21 +81,6 @@ class components_TVarchar{
 		$sqlSelect = $name.'.`data` '.$name;
 		$sqlFrom = ', cms_TVarchar '.$name;
 		$sqlWhere = 'AND '.$name.'.`parent_id` = sec.`id` AND '.$name.'.`name` = "'.$name.'"';
-	}
-
-	//=====================================
-	//Функция вывода данных
-	function view($name,$parentId,$param=''){
-		//components_TVarchar::createTable();
-		
-		$data_child_element=sys::sql("SELECT `data` FROM `prefix_TVarchar` WHERE `name`='$name' AND `parent_id`='$parentId';",0);
-		
-		if (mysql_num_rows($data_child_element)==0) {
-			return '';
-		} else {
-			if( $param == 'html' ) return htmlspecialchars( mysql_result($data_child_element,0) );
-			return mysql_result($data_child_element,0);
-		}
 	}
 
 
