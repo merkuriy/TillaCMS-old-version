@@ -3,9 +3,16 @@
 	function saveDataSection(){
 		
 		if( typeof(tinyMCE)=='object' )
-		$('textarea').each(function(){
+		$('textarea.wysiwyg').each(function(){
 			var oTextarea = $(this).tinymce();
 			if( oTextarea ) oTextarea.hide();
+		});
+		
+		
+		$('div.editorCode>textarea').each(function(){
+			$(this).val(
+				$(this).data('codemirror').getCode()
+			);
 		});
 		
 		
@@ -17,7 +24,7 @@
 	        notify(data);
 			
 			if( typeof(tinyMCE)=='object' )
-			$('textarea').each(function(){
+			$('textarea.wysiwyg').each(function(){
 				var oTextarea = $(this).tinymce();
 				if( oTextarea ) oTextarea.show();
 			});
@@ -81,8 +88,24 @@
 			
 			
 			
+			$('div.editorCode>textarea').each(function(){
+				
+				$(this).data('codemirror',
+					CodeMirror.fromTextArea( this, {
+					    height: "350px",
+					    parserfile: ["parsexml.js", "parsecss.js", "tokenizejavascript.js", "parsejavascript.js", "parsehtmlmixed.js"],
+					    stylesheet: ["/css_js/codemirror/css/xmlcolors.css", "/css_js/codemirror/css/jscolors.css", "/css_js/codemirror/css/csscolors.css"],
+					    path: "/css_js/codemirror/js/"
+					})
+				);
+				
+			});
 			
-			$('textarea.wisiwyg').tinymce({
+			
+			
+			
+			
+			$('textarea.wysiwyg').tinymce({
 				// Location of TinyMCE script
 				script_url : '/css_js/tiny_mce/tiny_mce.js',
 	

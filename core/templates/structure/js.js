@@ -1,3 +1,6 @@
+	
+	<script src="/css_js/codemirror/js/codemirror.js" type="text/javascript"></script>
+	
 	<script type="text/javascript" src="/css_js/jquery/jquery.js"></script>
 	<script type="text/javascript" src="/css_js/qui/jquery.qui-tree.js"></script>
 	<script type="text/javascript" src="/css_js/jquery/jquery.timers.js"></script>
