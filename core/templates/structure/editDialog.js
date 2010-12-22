@@ -90,6 +90,7 @@
 			
 			$('div.editorCode>textarea').each(function(){
 				
+				if( !$(this).data('codemirror') )
 				$(this).data('codemirror',
 					CodeMirror.fromTextArea( this, {
 					    height: "350px",
