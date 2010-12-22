@@ -9,7 +9,8 @@
 	Тип компонента:
 	<select name="type">
 		<option value="0">WYSIWYG редактор текста</option>
-		<option value="1" %type%>Простой редактор текста</option>
+		<option value="1" %type1%>Простой редактор текста</option>
+		<option value="2" %type2%>Редактор html+css+js кода CodeMirror</option>
 	</select>
 	<br/>
 	<br/>

@@ -53,7 +53,9 @@ class components_TText{
 		);
 		
 
-		if ($data[0]['type'])
+		if ($data[0]['type']==2)
+			return admin::draw('TText/editDialogCode', $SEND);
+		else if ($data[0]['type']==1)
 			return admin::draw('TText/editDialog', $SEND);
 		
 		return admin::draw('TText/editDialogWYSIWYG', $SEND);
@@ -115,10 +117,18 @@ class components_TText{
 		
 		$SEND = sys::sql("SELECT `type` FROM `prefix_TTextSettings` WHERE `id`='$id';",1);
 		
-		if (count($SEND) &&  $SEND[0]['type'] )
-			$SEND['type'] = 'selected="selected"';
+		
+		
+		if (count($SEND)){
+			$SEND['type1'] = $SEN['type2'] = '';
+			if( $SEND[0]['type']==2 )
+				$SEND['type2'] = 'selected="selected"';
+			else if( $SEND[0]['type'] )
+				$SEND['type1'] = 'selected="selected"';
+		}
+			
 		else
-			$SEND['type'] = '';
+			$SEND['type1'] = '';
 		
 		$SEND['parent'] = mysql_result(
 			sys::sql("SELECT

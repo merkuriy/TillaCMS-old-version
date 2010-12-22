@@ -2,5 +2,5 @@
 <div class="name_section_block">
 	%title% (%name%):
 </div>
-<textarea name="%name%" class="wisiwyg">%data%</textarea>
+<textarea name="%name%" class="wysiwyg">%data%</textarea>
 <br/>
