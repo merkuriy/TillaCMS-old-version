@@ -250,10 +250,15 @@ H3{
 	display: block;
 	
 	width: 696px;
-	height: 111px;
+	height: 444px;
 	
 	font-size: 12px;
 }
+
+.editorCode {
+	border: 1px solid #9be;
+}
+
 .mceEditor{
 	width:		696px;
 }
