@@ -3,6 +3,8 @@
 	%title% (%name%):
 </div>
 <div class="editorCode">
-	<textarea name="%name%" class="ttext">%data%</textarea>
+	<textarea name="%name%" class="ttext" id="value%parentId%%name%"></textarea>
 </div>
-<br/>
+<script>
+	$('#value%parentId%%name%').val(%data%);
+</script>

@@ -47,9 +47,10 @@ class components_TText{
 		;", 1);
 
 		$SEND = array(
+			'parentId' => $parentId,
 			'title' => $title,
 			'name' => $name,
-			'data' => $data[0]['data']
+			'data' => $str = json_encode( $data[0]['data'] )
 		);
 		
 

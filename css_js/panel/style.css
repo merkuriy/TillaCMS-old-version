@@ -252,22 +252,78 @@ H3{
 	width: 696px;
 	height: 111px;
 	
+	margin: 0 0 2px;
+	
 	font-size: 12px;
 }
 
 .editorCode {
+	margin: 0 0 2px;
+	
 	border: 1px solid #9be;
 }
 .editorCode textarea {
 	height: 444px;
 }
 
+
+.TNFiles-menu {
+	background: #e7F1Fa;
+	
+	padding: 3px;
+	
+	border: 1px solid #9be;
+}
+.TNFiles-menu a {
+	display: inline-block;
+	
+	padding: 5px;
+	
+	color: #000;
+	line-height: 11px;
+}
+.TNFiles-menu a:hover {
+	background: #caddf0;
+}
+
+.TNFiles .files {
+	max-height: 166px;
+	
+	padding: 3px;
+	
+	overflow: auto;
+	
+	border: 1px solid #9be;
+	border-top: none;
+}
+.TNFiles .files a {
+	display: block;
+	
+	padding: 5px;
+	
+	color: #000;
+}
+.TNFiles .files a:hover {
+	background: #e7F1Fa;
+}
+
+
+.TNFilesLoader {
+	display: none;
+}
+
+
+
+
 .mceEditor{
-	width:		696px;
+	display: block;
+	width: 696px;
+	
+	margin: 0 0 2px;
 }
 .structure{
-	display:block;
-	height:24px;
+	display: block;
+	height: 24px;
 	line-height: 20px;
 	border-bottom: 1px solid #cccccc;
 }
