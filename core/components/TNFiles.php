@@ -108,7 +108,7 @@ class components_TNFiles {
 			return false;
 		
 		
-		$deldir = function($d){
+		function deldir($d){
 			
 			$dh = opendir( $d );
 			
@@ -127,7 +127,7 @@ class components_TNFiles {
 			rmdir( $d );
 		};
 		
-		$deldir('../data/files/'.$id);
+		deldir('../data/files/'.$id);
 		
 	}
 

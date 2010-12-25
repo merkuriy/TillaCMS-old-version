@@ -21,7 +21,7 @@
 		
 		var runtime = 'flash';
 		if (navigator.userAgent.toLowerCase().indexOf('chrome') > -1) {
-			runtime = 'flash,gears,html5,silverlight,browserplus'
+			runtime = 'gears,html5,flash,silverlight,browserplus'
 		}
 		
 		$('#loader%id%%name%').show()

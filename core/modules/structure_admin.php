@@ -388,7 +388,36 @@ class modules_structure_admin{
 
 	//==================================================================================================
 	// Функция сохранения изменений в контенте элемента
-	function editElementSCR($POST,$FILES,$author=''){
+	function editElementSCR($POST, $FILES, $author=''){
+		
+		if( isset($_GET['id']) && isset($_GET['name']) ){
+			
+			$sql = sys::sql("
+				SELECT
+					class.`value`
+				FROM
+					`prefix_Sections` sect,
+					`prefix_ClassSections` class
+				WHERE
+					sect.`id` = ".$_GET['id']." AND
+					class.`name` = '".$_GET['name']."' AND
+					class.`parent_id` = sect.`base_class`
+				LIMIT 1
+			",0);
+			
+			
+			
+			if( mysql_num_rows($sql) ){
+					
+				$component = mysql_result($sql,0);
+				$POSTC['parent_id'] = $_GET['id'];
+				$POSTC['dataName'] = $_GET['name'];
+				
+				eval('components_'.$component.'::save($POSTC,$_FILES);');
+			};
+			
+			return ;
+		}
 		
 		if( isset($POST['name']) and isset($POST['title']) ){
 			// Обновляем Title и Name
@@ -419,7 +448,7 @@ class modules_structure_admin{
 						`prefix_Sections` sect,
 						`prefix_ClassSections` class
 					WHERE
-						sect.`id` = '".$POST['id']."' AND
+						sect.`id` = ".$POST['id']." AND
 						class.`name` = '$key' AND
 						class.`parent_id` = sect.`base_class`
 					LIMIT 1
