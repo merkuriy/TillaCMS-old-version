@@ -31,7 +31,7 @@
 
 	<div id="DIVheadAll">
 		<div id="DIVhead">
-			<h1>Q-Panel CMS v.1.067 beta</h1>
+			<h1>Q-Panel CMS v.1.070 beta</h1>
 		</div>
 		<div id="DIVrightHead">
 			%userName%
