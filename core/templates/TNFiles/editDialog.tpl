@@ -30,10 +30,6 @@
 			runtimes: runtime,
 			url: '/panel/structure?action=editElementSCR&author=admin&id=%id%&name=%name%',
 			unique_names: true,
-			filters: [{
-				title: "Image files",
-				extensions: "jpg"
-			}],
 	        max_file_size : '10mb', 
 	        chunk_size : '1mb',
 			flash_swf_url : '/css_js/plupload/plupload.flash.swf'

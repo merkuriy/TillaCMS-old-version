@@ -90,15 +90,41 @@
 			
 			$('div.editorCode>textarea').each(function(){
 				
-				if( !$(this).data('codemirror') )
-				$(this).data('codemirror',
-					CodeMirror.fromTextArea( this, {
-					    height: "350px",
-					    parserfile: ["parsexml.js", "parsecss.js", "tokenizejavascript.js", "parsejavascript.js", "parsehtmlmixed.js"],
-					    stylesheet: ["/css_js/codemirror/css/xmlcolors.css", "/css_js/codemirror/css/jscolors.css", "/css_js/codemirror/css/csscolors.css"],
-					    path: "/css_js/codemirror/js/"
-					})
-				);
+				if( !$(this).data('codemirror') ){
+					$(this).data('codemirror',
+						CodeMirror.fromTextArea( this, {
+						    height: "350px",
+						    parserfile: ["parsexml.js", "parsecss.js", "tokenizejavascript.js", "parsejavascript.js", "parsehtmlmixed.js"],
+						    stylesheet: ["/css_js/codemirror/css/xmlcolors.css", "/css_js/codemirror/css/jscolors.css", "/css_js/codemirror/css/csscolors.css"],
+						    path: "/css_js/codemirror/js/",
+						    saveFunction: function(){
+								
+								var data = {
+									id: $('#pageid').val()
+								}
+								
+								data[this.getElement.attr('name')] = this.getElement.data('codemirror').getCode();
+								
+								$.ajax({
+									url: '/panel/structure?action=editElementSCR&author=admin',
+									data: data,
+									type: 'POST',
+									cache: false,
+									success: function(msg){
+										
+						     			notify(msg);
+										
+						   			}
+						
+								});
+								
+								
+							},
+							getElement: $(this)
+						})
+						
+					);
+				}
 				
 			});
 			
