@@ -296,14 +296,17 @@ H3{
 	border: 1px solid #9be;
 	border-top: none;
 }
-.TNFiles .files a {
+.TNFiles .files li {
 	display: block;
 	
-	padding: 5px;
+	list-style: none;
 	
+	padding: 5px 9px;
+}
+.TNFiles .files a {
 	color: #000;
 }
-.TNFiles .files a:hover {
+.TNFiles .files li:hover {
 	background: #e7F1Fa;
 }
 

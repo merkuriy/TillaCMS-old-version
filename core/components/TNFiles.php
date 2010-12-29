@@ -36,7 +36,7 @@ class components_TNFiles {
 			$SEND['files'] = '';
 			
 			foreach( $files as $val ){
-				$SEND['files'] .= '<a href="/'.$val.'">/'.$val.'</a>';
+				$SEND['files'] .= '<li><a href="/data/files/'.$id.'/'.$val.'">/data/files/'.$id.'/'.$val.'</a></li>';
 			}
 			
 		}
