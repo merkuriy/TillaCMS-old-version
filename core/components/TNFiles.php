@@ -53,38 +53,36 @@ class components_TNFiles {
 		
 		if (isset($_POST['chunks'])){
 			
+			$path = '../data/files/'.$POST['parent_id'];
+			
 			if ($_POST['chunk'] == 0){
 				//если это первая часть файла
 				
-				$path = '../data/files/'.$POST['parent_id'];
-				
 				if (!file_exists($path))
 					mkdir($path, 0755);
-					
-				$path = $path.'/'.$_FILES['file']['name'];
 				
-				//проверить папку и создать её
-				$file = fopen($path, "wb");
+				move_uploaded_file($_FILES['file']['tmp_name'], $path.'/'.$_FILES['file']['name']);
 				
 			}else{
-				$path = $path.'/'.$_FILES['file']['name'];
 				
-				$file = fopen($path, "ab");
+				$file = fopen($path.'/'.$_FILES['file']['name'], "ab");
+				
+				if ($file) {
+					// Read binary input stream and append it to temp file
+					$in = fopen($_FILES['file']['tmp_name'], "rb");
+		
+					if ($in) {
+						while ($buff = fread($in, 4096))
+							fwrite($file, $buff);
+					} else
+						die('{"jsonrpc" : "2.0", "error" : {"code": 101, "message": "Failed to open input stream."}, "id" : "id"}');
+		
+					fclose($file);
+					unlink($_FILES['file']['tmp_name']);
+				}
 			}
 			
-			if ($file) {
-				// Read binary input stream and append it to temp file
-				$in = fopen($_FILES['file']['tmp_name'], "rb");
-	
-				if ($in) {
-					while ($buff = fread($in, 4096))
-						fwrite($file, $buff);
-				} else
-					die('{"jsonrpc" : "2.0", "error" : {"code": 101, "message": "Failed to open input stream."}, "id" : "id"}');
-	
-				fclose($file);
-				unlink($_FILES['file']['tmp_name']);
-			}
+			
 			
 			
 		}
