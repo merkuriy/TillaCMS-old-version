@@ -1,3 +1,6 @@
+html {
+	overflow: hidden;
+}
 #uploaderDIV{
 	margin: 10px;
 }
@@ -465,7 +468,7 @@ H3{
 }
 
 .smallContent{
-	padding: 5px;
+	padding: 5px 0;
 }
 
 .selector{
@@ -482,7 +485,9 @@ H3{
 .editContent2{
 	width: 100%;
 	height: 633px;
-	overflow: auto;	
+	overflow: auto;
+	
+	padding-right: 5px;
 }
 
 #rootSel{
