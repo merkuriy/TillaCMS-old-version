@@ -1,19 +1,19 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru" dir="ltr">
 <head>  
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>Q-Panel CMS - Авторизация</title>
 	<style type="text/css" media="screen, projection">
 		/*<![CDATA[*/
-		@import "../css_js/panel/default.css";
-		@import "../css_js/panel/style.css";
+		@import "/css_js/panel/default.css";
+		@import "/css_js/panel/style.css";
 		/*]]>*/
 	</style>
-	<script type="text/javascript" src="../css_js/jquery/jquery.js"></script>
+	<script type="text/javascript" src="/css_js/jquery/jquery.js"></script>
 	
 	<script type="text/javascript">
-		$(document).ready(function(){
-		
+		$(function(){
+			
 			$(window).bind("resize", function(){
 				FullScreen();
 			});
@@ -30,6 +30,7 @@
 	</script>
 </head>
 <body>
+	
 	<div id="DIVauth">
 		<div id="DIVheadAuth">
 			<h1>Q-Panel CMS</h1>
@@ -58,5 +59,6 @@
 			</form>
 		</div>
 	</div>
+	
 </body>
 </html>
