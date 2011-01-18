@@ -5,36 +5,45 @@
  *	===============================
  *	Комопнент хранения изображений (позволяет загружать их на сервер)
  */
-class components_TImage{
+class components_TImage {
 	
 	//=====================================
 	//Функция вывода на редактирование
 	function edit($name,$parentId,$title){
-		components_TImage::createTable();
+		
+		$fileExists = false;
+		
+		
 		$data_child_element=sys::sql("SELECT `id` FROM `prefix_TImage` WHERE `name`='$name' AND `parent_id`='$parentId';",0);
-		$id=mysql_result($data_child_element,0);
+		
+		$id = mysql_result($data_child_element,0);
+		
 		if (mysql_num_rows($data_child_element)>0) {
+			
 			$parentClass=mysql_result(sys::sql("SELECT `base_class` FROM `prefix_Sections` WHERE `id`='$parentId';",0),0);
 			$parent=mysql_result(sys::sql("SELECT `id` FROM `prefix_ClassSections` WHERE `parent_id`='$parentClass' AND `value`='TImage' AND `name`='$name';",0),0);
 			$rule=sys::sql("SELECT `id`,`parent_id`,`width`,`height`,`logo`,`psevdo`,`cropw`,`croph`,`resize`,`path` FROM `prefix_ImageSettings` WHERE `parent_id`='$parent';",0);
 			$x=0;     
 			while($row = mysql_fetch_array($rule)){
-				$DATA['path'] = $id.$row['psevdo'];
-				$DATA['title'] = $title;
-				if (file_exists("../data/images/".$id.$row['psevdo'].".jpg")){
+				$SEND['path'] = $id.$row['psevdo'];
+				
+				if (file_exists("../data/images/".$SEND['path'].".jpg")){
 					if ($x==0){
-						$SEND['image'] .= admin::draw('TImage/image',$DATA);
+						$fileExists = true;
 						$x=1;
 					}
-				} else {
-					$SEND['image'] = admin::draw('TImage/alert',$DATA);
 				}
 			}
 		}
+		
 		$SEND['title'] = $title;
 		$SEND['name'] = $name;
-		$out .= admin::draw('TImage/editDialog',$SEND);
-		return $out;
+		
+		if( $fileExists )
+			return admin::draw('TImage/editDialog',$SEND);
+			
+		return admin::draw('TImage/editDialogEmpty',$SEND);
+		
 	}
 
 	function yiq($r,$g,$b) { return (($r*0.299)+($g*0.587)+($b*0.114)); } 
@@ -42,6 +51,16 @@ class components_TImage{
 	//=====================================
 	//Функция сохранения данных
 	function save($POST,$FILES,$name='', $param=''){
+		
+		if($POST['data']=='#delete'){
+			
+			components_TImage::deleteAttr($POST['dataName'], $POST['parent_id']);
+			
+			echo 'Изображение удалёно<br/>';
+			
+			return false;
+		}
+		
 		$result = sys::sql("SELECT `id` FROM `prefix_TImage` WHERE `name`='".$POST['dataName']."' AND `parent_id`='".$POST['parent_id']."';",0);
 		if (mysql_num_rows($result)==0){
 			$POST['parentId']=$POST['parent_id'];
@@ -81,7 +100,8 @@ class components_TImage{
 						if ($row['height']==0){$row['height']=$height;}
 						// Узнаем размеры
 						eval('$img_in=ImageCreateFrom'.$type[1].'($file);');
-// Если требуется создание черно-белого изображения
+						
+						// Если требуется создание черно-белого изображения
 						if ($bw){
 							$img_src = $img_in;
 							echo $width;
@@ -209,8 +229,9 @@ class components_TImage{
 	//=====================================
 	//Функция создания записи
 	function createStr($POST){
-		components_TImage::createTable();
+		
 		$result = sys::sql("SELECT `id` FROM `prefix_TImage` WHERE `name`='".$POST['dataName']."' AND `parent_id`='".$POST['parentId']."'",0);
+		
 		if (mysql_num_rows($result)=='0'){
 			$result = sys::sql("INSERT INTO `prefix_TImage` ( `id` , `name` , `parent_id` ) VALUES ('', '".$POST['dataName']."', '".$POST['parentId']."');",0);
 		};
@@ -311,55 +332,6 @@ class components_TImage{
 			;",0) ,0 
 		);
 		
-		/**/
-		
-		
-		
-		/*
-		if ( isset($system['section'][$parentId]) ){
-			$sqlFrom = '';
-			$sqlWhere = 'baseClass.`parent_id` = '.$system['section'][$parentId]['base_class'].' AND ';
-			
-			
-		}else{
-			$sqlFrom = '`prefix_Sections` section,';
-			$sqlWhere = '
-				section.`id` = '.$parentId.' AND
-				section.`base_class = `baseClass.`parent_id` AND
-			';
-		}
-		
-		
-		if ($param){
-			$sqlWhere .= 'settings.`psevdo` = "'.$param.'" AND ';
-		}
-		
-		
-		list($data_child_element, $path_none, $param) = mysql_fetch_row(sys::sql("
-			SELECT
-				tImage.`id` id,
-				settings.`path` path,
-				settings.`psevdo` psevdo
-			FROM
-				$sqlFrom
-				`prefix_TImage` tImage,
-				`prefix_ClassSections` baseClass,
-				`prefix_ImageSettings` settings
-			WHERE
-				$sqlWhere
-				
-				tImage.`name` = '$name' AND
-				tImage.`parent_id` = $parentId AND	
-				
-				baseClass.`name` = '$name' AND
-				
-				settings.`parent_id` = baseClass.`id`
-				
-			LIMIT 1
-		;", 0));
-		/**/
-		
-		
 		
 		
 		
@@ -410,37 +382,6 @@ class components_TImage{
 		
 		
 		return substr($file, 2);
-	}
-
-
-	//=====================================
-	//Функция Создания таблицы для хранения данных
-	function createTable(){
-		if (!file_exists('../data/images')) {
-			mkdir("../data/images", 0777);
-		};
-		$query=sys::sql("
-			CREATE TABLE IF NOT EXISTS `prefix_TImage` (
-				`id` int(11) NOT NULL auto_increment,
-				`name` varchar(255) NOT NULL,
-				`parent_id` int(11) NOT NULL,
-				PRIMARY KEY  (`id`)
-			) ENGINE=MyISAM AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_general_ci AUTO_INCREMENT=1 ;",0);
-		$query=sys::sql("	
-			CREATE TABLE IF NOT EXISTS `prefix_ImageSettings` (
-				`id` INT NOT NULL AUTO_INCREMENT ,
-				`parent_id` INT( 11 ) NOT NULL ,
-				`width` INT( 5 ) NOT NULL ,
-				`height` INT( 5 ) NOT NULL ,
-				`logo` VARCHAR( 255 ) NOT NULL ,
-				`logowidth` VARCHAR( 255 ) NOT NULL ,
-				`logoheight` VARCHAR( 255 ) NOT NULL ,
-				`psevdo` VARCHAR( 255 ) NOT NULL ,
-				`cropw` VARCHAR( 10 ) NOT NULL ,
-				`croph` VARCHAR( 10 ) NOT NULL ,
-				`resize` INT( 1 ) NOT NULL ,
-				PRIMARY KEY ( `id` )
-			) CHARACTER SET utf8 COLLATE utf8_general_ci;",0);
 	}
 
 
@@ -534,12 +475,50 @@ class components_TImage{
 	function delSettings($id){
 		$result = sys::sql("DELETE FROM `prefix_ImageSettings` WHERE `id` = '$id' LIMIT 1;",0);
 	}
-
-
+	
+	
 	//=====================================
 	//Функция Проверки условий
 	function condition($name,$parentId,$cond){
 		return false;
 	}
+	
 }
+
+
+
+
+// Инициализация компонента
+
+if (!file_exists('../data/images')) {
+	mkdir("../data/images", 0777);
+};
+
+$query=sys::sql("
+	CREATE TABLE IF NOT EXISTS `prefix_TImage` (
+		`id` int(11) NOT NULL auto_increment,
+		`name` varchar(255) NOT NULL,
+		`parent_id` int(11) NOT NULL,
+		PRIMARY KEY  (`id`)
+	) ENGINE=MyISAM AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_general_ci AUTO_INCREMENT=1
+;",0);
+
+$query=sys::sql("	
+	CREATE TABLE IF NOT EXISTS `prefix_ImageSettings` (
+		`id` INT NOT NULL AUTO_INCREMENT ,
+		`parent_id` INT( 11 ) NOT NULL ,
+		`width` INT( 5 ) NOT NULL ,
+		`height` INT( 5 ) NOT NULL ,
+		`logo` VARCHAR( 255 ) NOT NULL ,
+		`logowidth` VARCHAR( 255 ) NOT NULL ,
+		`logoheight` VARCHAR( 255 ) NOT NULL ,
+		`psevdo` VARCHAR( 255 ) NOT NULL ,
+		`cropw` VARCHAR( 10 ) NOT NULL ,
+		`croph` VARCHAR( 10 ) NOT NULL ,
+		`resize` INT( 1 ) NOT NULL ,
+		PRIMARY KEY ( `id` )
+	) CHARACTER SET utf8 COLLATE utf8_general_ci
+;",0);
+
+
 ?>
