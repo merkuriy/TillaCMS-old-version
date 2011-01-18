@@ -529,8 +529,8 @@ if (count($CONF)==0 or $_POST['action']=='createCONF'){
 /********************************************/
 /* Отображение данных о версии CMS			*/
 $_SESSION['cur_branch'] = 'branch1';
-$_SESSION['cur_version'] = '1.073 beta';
-$_SESSION['cur_number'] = 1073;
+$_SESSION['cur_version'] = '1.081 beta';
+$_SESSION['cur_number'] = 1081;
 /* Отображение данных о версии CMS			*/
 /********************************************/
 				
