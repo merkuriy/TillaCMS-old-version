@@ -433,13 +433,18 @@ class modules_structure_admin{
 			",0);
 		}
 		
+		$id = $POST['id'];
+		
+		unset($POST['id']);
 		unset($POST['name']);
 		unset($POST['title']);
 
 		foreach ($POST as $key => $value){
-			
+						
 			$keyShort=explode('/',$key);
 			if( count($keyShort)==1 ){
+				
+				
 				
 				$sql = sys::sql("
 					SELECT
@@ -448,7 +453,7 @@ class modules_structure_admin{
 						`prefix_Sections` sect,
 						`prefix_ClassSections` class
 					WHERE
-						sect.`id` = ".$POST['id']." AND
+						sect.`id` = ".$id." AND
 						class.`name` = '$key' AND
 						class.`parent_id` = sect.`base_class`
 					LIMIT 1
@@ -457,12 +462,15 @@ class modules_structure_admin{
 				if( mysql_num_rows($sql) ){
 					
 					$component=mysql_result($sql,0);
-					$POSTC['parent_id']=$POST['id'];
+					$POSTC['parent_id']=$id;
 					$POSTC['dataName']=$key;
 					$POSTC['data']=$value;
+					
 					eval('components_'.$component.'::save($POSTC,$_FILES);');
 				};
+				
 			} else {
+				
 				if ($keyShort[1]=='pass'){
 
 					$sql = sys::sql("
@@ -472,14 +480,14 @@ class modules_structure_admin{
 							`prefix_Sections` sect,
 							`prefix_ClassSections` class
 						WHERE
-							sect.`id` = '".$POST['id']."' AND
+							sect.`id` = '".$id."' AND
 							class.`name` = '".$keyShort[0]."' AND
 							class.`parent_id` = sect.`base_class`
 					",0);
 
 					if (mysql_num_rows($result)){
 						$component=mysql_result($result,0);
-						$POSTC['parent_id']=$POST['id'];
+						$POSTC['parent_id'] = $id;
 						$POSTC['dataName']=$keyShort[0];
 						$POSTC['pass']=$value;
 						$POSTC['group']=$POST[$keyShort[0].'/group'];
@@ -499,13 +507,13 @@ class modules_structure_admin{
 										`prefix_Sections` sect,
 										`prefix_ClassSections` class
 									WHERE
-										sect.`id` = '".$POST['id']."' AND
+										sect.`id` = '".$id."' AND
 										class.`name` = '".$keyShort[0]."' AND
 										class.`parent_id` = sect.`base_class`
 					",0);
 					if (mysql_num_rows($sql)>0){
 						$component=mysql_result($sql,0);
-						$POSTC['parent_id']=$POST['id'];
+						$POSTC['parent_id']=$id;
 						$POSTC['dataName']=$keyShort[0];
 						$POSTC['data']=$value;
 						eval('components_'.$component.'::save($POSTC,$FILES,$keyShort[0]);');

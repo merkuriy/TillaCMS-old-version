@@ -9,24 +9,35 @@ class components_TFiles{
 	
 	//=====================================
 	//Функция вывода на редактирование
-	function edit($name,$parentId,$title){
-
-		components_TFiles::createTable();
-		$data_child_element=sys::sql("SELECT `id`,`data` FROM `prefix_TFiles` WHERE `name`='$name' AND `parent_id`='$parentId';",0);
-		$data=mysql_fetch_array($data_child_element);
+	function edit($name, $parentId, $title){
 		
-		$SEND['title'] = $title;
-		$SEND['name'] = $name;
-		$SEND['data'] = $data['data'];
-		$out = admin::draw('TFiles/editDialog',$SEND);
-
-		return $out;
+		$data_child_element=sys::sql("SELECT `id`,`data` FROM `prefix_TFiles` WHERE `name`='$name' AND `parent_id`='$parentId';",0);
+		$SEND = mysql_fetch_array($data_child_element);
+		
+		$SEND['title'] = &$title;
+		$SEND['name'] = &$name;
+		
+		if (file_exists($SEND['data']))
+			return admin::draw('TFiles/editDialog',$SEND);
+		
+		return admin::draw('TFiles/editDialogEmpty',$SEND);
 
 	}
 
 	//=====================================
 	//Функция сохранения данных
-	function save($POST,$FILES,$name='', $param=''){
+	function save($POST, $FILES, $name='', $param=''){
+		
+		if($POST['data']=='#delete'){
+			
+			components_TFiles::deleteAttr($POST['dataName'], $POST['parent_id']);
+			
+			echo 'Файл удалён<br/>';
+			
+			return false;
+		}
+		
+		
 		$result = sys::sql("SELECT `data` FROM `prefix_TFiles` WHERE `name`='".$POST['dataName']."' AND `parent_id`='".$POST['parent_id']."';",0);
 		if (mysql_num_rows($result)==0){
 			$POST['parentId']=$POST['parent_id'];
@@ -61,7 +72,7 @@ class components_TFiles{
 	//=====================================
 	//Функция создания записи
 	function createStr($POST){
-		components_TFiles::createTable();
+		
 		$result = sys::sql("SELECT `id` FROM `prefix_TFiles` WHERE `name`='".$POST['dataName']."' AND `parent_id`='".$POST['parentId']."'",0);
 		if (mysql_num_rows($result)=='0'){
 			$result = sys::sql("INSERT INTO `prefix_TFiles` (`id`,`name`,`parent_id`,`data`) VALUES ('','".$POST['dataName']."','".$POST['parentId']."','');",0);
@@ -84,7 +95,7 @@ class components_TFiles{
 	//=====================================
 	//Функция вывода данных
 	function view($name,$parentId,$param=''){
-		//components_TFiles::createTable();
+		
 		$data_child_element=sys::sql("SELECT `data` FROM `prefix_TFiles` WHERE `name`='$name' AND `parent_id`='$parentId';",0);
 		if (mysql_num_rows($data_child_element)==0) {
 			$out = '';
@@ -104,26 +115,31 @@ class components_TFiles{
 
 
 	//=====================================
-	//Функция Создания таблицы для хранения данных
-	function createTable(){
-		if (!file_exists('../data/files')) {
-			mkdir("../data/files", 0777);
-		};
-		$query=sys::sql("
-			CREATE TABLE IF NOT EXISTS `prefix_TFiles` (
-				`id` int(11) NOT NULL auto_increment,
-				`name` varchar(255) NOT NULL,
-				`parent_id` int(11) NOT NULL,
-				`data` varchar(255),
-				PRIMARY KEY  (`id`)
-			) ENGINE=MyISAM AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_general_ci AUTO_INCREMENT=1 ;",0);
-	}
-
-
-	//=====================================
 	//Функция Проверки условий
 	function condition($name,$parentId,$cond){
 		return false;
 	}
+	
 }
+
+
+
+// Инициализация компонента
+
+if (!file_exists('../data/files')) {
+	mkdir("../data/files", 0777);
+};
+
+$query=sys::sql("
+	CREATE TABLE IF NOT EXISTS `prefix_TFiles` (
+		`id` int(11) NOT NULL auto_increment,
+		`name` varchar(255) NOT NULL,
+		`parent_id` int(11) NOT NULL,
+		`data` varchar(255),
+		PRIMARY KEY  (`id`)
+	) ENGINE=MyISAM AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_general_ci AUTO_INCREMENT=1
+;",0);
+
+
+
 ?>
