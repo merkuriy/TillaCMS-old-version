@@ -84,10 +84,14 @@ class components_TFiles{
 	//Функция удаления записи
 	function deleteAttr($name,$id){
 		$result = sys::sql("SELECT `data` FROM `prefix_TFiles` WHERE `parent_id` = '$id' AND `name` = '$name' LIMIT 1;",0);
+		
+		if (!mysql_num_rows($result)) return false;
+		
 		$fileName=mysql_result($result,0);
 		if (file_exists($fileName)){
 			unlink($fileName);
 		}
+		
 		$result = sys::sql("DELETE FROM `prefix_TFiles` WHERE `parent_id` = '$id' AND `name` = '$name' LIMIT 1;",0);
 	}
 
