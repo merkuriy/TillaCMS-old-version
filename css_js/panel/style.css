@@ -1,5 +1,4 @@
 html {
-	display: block;
 	overflow: hidden;
 }
 #uploaderDIV{
@@ -314,6 +313,17 @@ H3{
 }
 .TNFiles .files li:hover {
 	background: #e7F1Fa;
+}
+
+.TNFiles .files li input {
+	display: none;
+	float: right;
+	
+	margin: -5px 0 0;
+	line-height: 6px;
+}
+.TNFiles .files li:hover input {
+	display: block;
 }
 
 
