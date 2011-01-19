@@ -37,4 +37,32 @@
 		
 	});
 	
+	//удаление файла
+	$('#files%id%%name%>li>input').click(function(){
+				
+		var data = {
+			id: '%id%',
+			"%name%": '#delete='+$(this).attr('name')
+		}
+		
+		$.ajax({
+			url: '/panel/structure?action=editElementSCR&author=admin',
+			data: data,
+			type: 'POST',
+			cache: false,
+			
+			fileLi: $(this).parent(),
+			
+			success: function(msg){
+				
+     			notify(msg);
+				
+				this.fileLi.remove();
+				
+   			}
+
+		});
+		
+	});
+	
 </script>

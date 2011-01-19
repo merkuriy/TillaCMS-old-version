@@ -36,7 +36,10 @@ class components_TNFiles {
 			$SEND['files'] = '';
 			
 			foreach( $files as $val ){
-				$SEND['files'] .= '<li><a href="/data/files/'.$id.'/'.$val.'">/data/files/'.$id.'/'.$val.'</a></li>';
+				$SEND['files'] .= admin::draw('TNFiles/file', array(
+					'id' => $id,
+					'val' => $val
+				));
 			}
 			
 		}
@@ -50,6 +53,17 @@ class components_TNFiles {
 	function save($POST,$FILES,$name='', $param=''){
 		
 		//file_put_contents('1.txt', print_r($GLOBALS, 1), FILE_APPEND );
+		
+		// удаление файла
+		if( substr($POST['data'], 0, 7) == '#delete'){
+			
+			unlink( '../data/files/'.$POST['parent_id'].'/'.substr($POST['data'], 8) );
+			
+			echo 'Файл удалён<br/>';
+			
+			return false;
+		}
+		
 		
 		if (isset($_POST['chunks'])){
 			
