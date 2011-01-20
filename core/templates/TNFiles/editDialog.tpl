@@ -57,7 +57,9 @@
 				
      			notify(msg);
 				
-				this.fileLi.remove();
+				this.fileLi.slideUp(155, function(){
+					$(this).remove();
+				})
 				
    			}
 
