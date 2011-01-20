@@ -189,25 +189,29 @@ H2{
 }
 
 H3{
-	font-size:11pt;
+	font-size: 11pt;
 	text-decoration: none;
 	font-weight: bold;
 }
 
-/* Стили для диалогов редактирования */
-#CMS_notify{
-	position:		absolute;
-	width:			140px;
-	height:			35px;
-	background:		#efefef;
-	z-index:		300000;
-	text-align:		center;
-	padding:		30px;
-	padding-top:	0px;
-	padding-bottom:	0px;
-	line-height:	35px;
-	left:			500px;
-	display:		none;
+/* Стили для уведомлений */
+#CMS_notify{	
+	position: absolute;
+	z-index: 300000;
+	
+	display: none;
+	
+	width: 140px;
+	
+	left: 50%;
+	
+	margin: 0 0 0 -70px;
+	padding: 9px 30px;
+	
+	color: #000;
+	text-align: center;
+	
+	background:	#efefef;
 }
 
 .value{
@@ -233,19 +237,19 @@ H3{
 }
 
 .edit{
-	display:block;
+	display: block;
 	clear: both;
 	line-height: 20px;
-	width:550px;
-	height:25px;
+	width: 550px;
+	height: 25px;
 	border: none;
 	
 	padding-top: 3px;
 }
 
 .component{
-	width:702px;
-	height:26px;
+	width: 702px;
+	height: 26px;
 	border: none;
 	
 	padding-top: 3px;
