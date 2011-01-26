@@ -248,8 +248,8 @@ H3{
 }
 
 .component{
+	display: table;
 	width: 702px;
-	height: 26px;
 	border: none;
 	
 	padding-top: 3px;
