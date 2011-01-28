@@ -34,59 +34,64 @@ if( $_SERVER["HTTP_HOST"]=='ru.vipjewelrydesign.com' ||
 
 //POST
 //=========
-	if ($_GET['action']=='deauth'){
-		modules_users_sys::deauth();
-	}
+if ($_GET['action']=='deauth'){
+	modules_users_sys::deauth();
+}
     
     $result_ajax = '';
-	$paramItem = 1;
+$paramItem = 1;
+
+while( isset($_POST['param'.$paramItem] ) ){
 	
-	while( isset($_POST['param'.$paramItem] ) ){
-		
-		$macros=explode('.',$_POST['param'.$paramItem]);
-		if ($macros[0]=='components'){
-			eval('$result_ajax .= '.$macros[0].'_'.$macros[1].'::'.$macros[2].'($_POST,$_FILES);');
-		} else {
-			$class_name = explode('_',$macros[0]);
+	$macros=explode('.',$_POST['param'.$paramItem]);
+	if ($macros[0]=='components'){
+		eval('$result_ajax .= '.$macros[0].'_'.$macros[1].'::'.$macros[2].'($_POST,$_FILES);');
+	} else {
+		$class_name = explode('_',$macros[0]);
+
+		if(empty($class_name[1])) $class_name[1]='view';
 	
-			if(empty($class_name[1])) $class_name[1]='view';
-		
-			if($class_name[0]=='system' or $class_name[0]==''){
-				$className=$class_name[1];
-			}else{
-				$className='modules_'.$class_name[0].'_'.$class_name[1];
-			}
-			
-			eval('$result_ajax .= '.$className.'::'.$macros[1].'($_POST);');
-			
+		if($class_name[0]=='system' or $class_name[0]==''){
+			$className=$class_name[1];
+		}else{
+			$className='modules_'.$class_name[0].'_'.$class_name[1];
 		}
 		
-		$paramItem++;
+		eval('$result_ajax .= '.$className.'::'.$macros[1].'($_POST);');
+		
 	}
+	
+	$paramItem++;
+}
     
     
     if( $_POST['result']=='ajax' or $_GET['result']=='ajax' ){
-    	if( $result_ajax=='' ) $result_ajax = '+';
-		die($result_ajax);
-	}
+    if( $result_ajax=='' ) $result_ajax = '+';
+	die($result_ajax);
+}
     
-//=========
-//POST
+
 
 
 
 ob_start();
 
-modules_structure_url::recognizeUrl();
 
-$resultHTML = view::tpl('page');
+if(file_exists('../data/viewHandler.php')){
+    include('../data/viewHandler.php');
+    
+}else{
+    modules_structure_url::recognizeUrl();
+    
+    $resultHTML = view::tpl('page');
+}
+
 
 
 view::debug_point( $system['section'], 'конец - sedtion' );
 view::debug_point( $system['tplFile'], 'конец - template' );
 
 $debug = ob_get_clean();
-
 
 
 
