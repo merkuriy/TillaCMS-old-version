@@ -42,7 +42,7 @@ class admin{
 			do{
 				$find = false;
 				$tpl = preg_replace_callback(
-		        	"/\%([^\%\(\)]+)\%/",
+		        	"/\%([A-Za-z0-9-_]{2,9})\%/",
 		            create_function(
 			            '$matches',
 			            'return admin::replace($matches);'
