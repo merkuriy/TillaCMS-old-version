@@ -141,7 +141,7 @@ jQuery.tree = function(options){
 	// Функция отрисовки дерева
 	this.draw = function(elem){
 		// Отрисовываем дерево
-		j(elem).append('<div id="'+options.id+'Container"><div class="quiTreeHead"><div id="'+options.id+'RootLabel" class="quiTreeRL"><div class="quiTreenodeName">Корень</div><div class="quiTreeBTN"><div class="quiTreeExitF"></div><div class="quiTreeAddN"></div></div></div></div><div id="'+options.id+'" class="quiTree"></div></div>');
+		j(elem).append('<a tabindex="1" id="'+options.id+'Container" class="quiTreeContainer"><div class="quiTreeHead"><div id="'+options.id+'RootLabel" class="quiTreeRL"><div class="quiTreenodeName">Корень</div><div class="quiTreeBTN"><div class="quiTreeExitF"></div><div class="quiTreeAddN"></div></div></div></div><div id="'+options.id+'" class="quiTree"></div></a>');
 		if (options.contextMenu!=''){
 			cm = '';
 			j.each(options.contextMenu, function(i,item){
@@ -155,7 +155,7 @@ jQuery.tree = function(options){
 					j(this).removeClass('hover');					
 				});
 			});
-			j('body').append('<ul class="quiTreeCM" id="'+options.id+'ContextMenu">'+cm+'</ul>');
+			j('body').append('<button class="quiTreeCM" id="'+options.id+'ContextMenu"><ul>'+cm+'</ul></button>');
 		};
 		// Внутренние настройки
 		var dragged = false;
@@ -165,10 +165,201 @@ jQuery.tree = function(options){
 		var startDrag = false;
 		var status = '';
 		var contextMenu = false;
+		var inFocus = false;
+		var targetContextMenu = false;
 
 	 /*-******************************/
 	/* Блок описания реакций НАЧАЛО */
-	
+
+		// Выделение дерева
+		j('.quiTreeContainer').bind('focus',function(){
+			if (j('.quiLabelTree.active').size()==0){
+				j('.quiLabelTree:eq(0)').addClass('active');
+			}
+			$(this).addClass('focus');
+			inFocus = true;
+		});
+		j('.quiTreeContainer').bind('focusin',function(){
+			if (j('.quiLabelTree.active').size()==0){
+				j('.quiLabelTree:eq(0)').addClass('active');
+			}
+			$(this).addClass('focus');
+			inFocus = true;
+		});
+		j('.quiTreeContainer').bind('focusout',function(){
+			inFocus = false;
+			setTimeout(function(){
+				if (!inFocus) j('.quiTreeContainer').removeClass('focus');
+			},100);
+		});
+		j('.quiTreeContainer *').live('click',function(){
+			if (inFocus==false)	j('.quiTreeContainer').focus();
+		});
+
+		// Подстановка своего контекстного меню
+		j(document).bind("contextmenu",function(){
+			if (cm.hide) cm.hide();
+		});
+
+		j('.quiTreeContainer').bind("contextmenu",function(e){
+			if ((j('.quiTreeContainer').height()+102)==e.pageY){
+				if (j('#'+options.id+'ContextMenu').css('display')=='none'){
+					j('.quiLabelTree.active').parent().add('UL.contextMenu');
+					cm = j('#'+options.id+'ContextMenu');
+					cm.css('top',j('.quiLabelTree.active').parent().parent().parent().position().top+80);
+					cm.css('left',j('.quiLabelTree.active').parent().parent().parent().position().left+17);
+					cm.show();
+					cm.focus();
+					selectNode(j('.quiLabelTree.active'));
+					
+					$(document).one('click',function(){
+						cm.hide();
+					});
+				}
+			}else{
+				if (targetContextMenu){
+					j('.quiLabelTree.active').parent().add('UL.contextMenu');
+					cm = j('#'+options.id+'ContextMenu');
+					cm.css('top',e.pageY);
+					cm.css('left',e.pageX);
+					cm.show();
+					cm.focus();
+					selectNode(j('.quiLabelTree.active'));
+					
+					$(document).one('click',function(){
+						cm.hide();
+					});
+				}else{
+					if (cm.hide) cm.hide();
+					j('.quiTreeContainer').focus();					
+				}
+			}
+			targetContextMenu = false;
+			return false;
+		});
+
+		// Реакция на нажатие стрелок
+		j('.quiTreeContainer').bind('keydown',function(e){
+			if (!(e.keyCode==93)){
+				if (cm.hide) cm.hide();
+			}
+			// Up
+			if (e.keyCode==38){
+				var index = 0;
+				total = j('.quiLabelTree:visible').size()-1;
+				j('.quiLabelTree:visible').each(function(e){
+					if (j(this).hasClass('active')) if(e>0){
+						index = e-1;
+					}else{
+						index = e;
+					}
+				});
+				selectNode(j('.quiLabelTree:visible:eq('+index+')'));
+			}
+			// Down
+			if (e.keyCode==40){
+				total = j('.quiLabelTree:visible').size()-1;
+				j('.quiLabelTree:visible').each(function(e){
+					if (j(this).hasClass('active')){
+						if (total>e){
+							index = e+1;
+						}else{
+							index = e;
+						}
+					}
+				});
+				selectNode(j('.quiLabelTree:visible:eq('+index+')'));
+			}
+			// Right
+			if (e.keyCode==39){
+				var t=j('.quiLabelTree.active').parent().parent().children('.quiArrowTree');
+				var tp=t.parent();
+				// Если объект открытая папка, то закрываем её
+				if(tp.parent('li').hasClass('folder-open')){
+					total = j('.quiLabelTree:visible').size()-1;
+					j('.quiLabelTree:visible').each(function(e){
+						if (j(this).hasClass('active')){
+							if (total>e){
+								index = e+1;
+							}else{
+								index = e;
+							}
+						}
+					});
+					selectNode(j('.quiLabelTree:visible:eq('+index+')'));
+				// Если объект закрытая папка, то откраваем её
+				}else if(tp.parent('li').hasClass('folder')){
+					tp.children('.quiIconTree').css("background-position", "0px 0px");
+					tp.children('.quiIconTree').css("background-image", "url(/css_js/resources/tree/ajax-loader.gif)");
+					// Если дочерние элементы получаются через AJAX запускаем механизм получения
+					if (tp.parent('li').children('ul').hasClass('ajax')) {
+						j.getJSON(tp.parent('li').children('ul').attr('url'),
+							function(JSON){
+								// Парсим полученный JSON и подключаем полученный код к открываемому элементу
+								tp.parent('li').children('ul').html('');
+								tp.parent('li').children('ul').append(parseItems(JSON));
+								// Удаляем метку AJAX указывающую на источник получения дочерних элементов
+								tp.parent('li').children('ul').removeClass('ajax');
+								// Вызываем функцию открытия папки
+								openFolder(t);
+							}
+						);
+					// Если элементы загружены изначально или получены через AJAX ранее
+					}else {
+						// Вызываем функцию открытия папки
+						openFolder(t);
+					}
+				};
+			}
+			// Left
+			if (e.keyCode==37){
+				if(j('.quiLabelTree.active').parent().parent().parent().children('ul').html()==null){
+					if (!(j('.quiLabelTree.active').parent().parent().parent().parent().parent().children('.quiTreeNode').children('.quiIconTree').children('.quiLabelTree').html()==null))
+						selectNode(j('.quiLabelTree.active').parent().parent().parent().parent().parent().children('.quiTreeNode').children('.quiIconTree').children('.quiLabelTree'));
+				}else{
+					var t=j('.quiLabelTree.active').parent().parent().children('.quiArrowTree');
+					var tp=t.parent();
+					// Если объект открытая папка, то закрываем её
+					if(tp.parent('li').hasClass('folder-open')){
+						tp.parent('li').removeClass('folder-open');
+						tp.parent('li').addClass('folder');
+						tp.parent('li').children('ul').slideUp();
+						t.css("background-position", "-4px 0px");
+						tp.children('.quiIconTree').css("background-position","0px 0px");
+					}
+				};
+			}
+			// Открытие на редактирование
+			if(e.keyCode==13){
+				options.dblClick(j('.quiLabelTree.active').parent().parent().parent('li'));
+			}
+			// Удаление
+			if(e.keyCode==46){
+				var index = 0;
+				total = j('.quiLabelTree:visible').size()-1;
+				j('.quiLabelTree:visible').each(function(e){
+					if (j(this).hasClass('active')) if(e>0){
+						index = e-1;
+					}else{
+						index = e;
+					}
+				});
+				var answer = confirm ("Вы действительно хотите удалить элемент \""+derevo.getSelected().text()+"\"?");
+				if (answer){
+					$.ajax({
+						type: "GET",
+						url: "../core/admin.php",
+						data: "module=structure&author=admin&action=deleteElement&id="+derevo.getSelected().attr('id').replace('derevoItem',''),
+						success: function(msg){
+							notify(msg);
+							derevo.delNode(derevo.getSelected());
+							selectNode(j('.quiLabelTree:visible:eq('+index+')'));
+						}
+					});
+				}
+			}
+		});
+
 		// Наведение на стрелку
 		j('.quiArrowTree')
 		
@@ -303,6 +494,7 @@ jQuery.tree = function(options){
 		})
 		// Старт перетаскивания
 		.live("mousedown",function(e){
+			targetContextMenu = true;
 			selectNode(j(this).children('.quiLabelTree'));
 			// Если нажата не правая кнопка мыши
 			if (e.button != '2') {
@@ -332,59 +524,8 @@ jQuery.tree = function(options){
 					j('#quiDraggedTree').css("left", e.pageX + 20);
 					dragged = true;
 				});
-			// Если нажата правая кнопка мыши
-			}/*else{
-				
-				
-				// Отвязываем ранее созданное событие
-				j('.quiIconTree').unbind('mouseup');
-				// Отлавливаем отпускание клавиши мыши
-				j('.quiIconTree').mouseup(function(e){
-					// Если была нажата правая кнопка мыши и задано контекстное меню
-					if (e.button == '2' && options.contextMenu != '') {
-						contextMenu = false;
-						
-						//alert( $(this).html() );
-						
-						
-						
-						// Отменяем вызов стандартного контекстного меню
-						j(this).add('UL.contextMenu');//.bind('contextmenu', function(){return false;});
-						
-						
-						
-						cm = j('#'+options.id+'ContextMenu');
-						cm.css('top',e.pageY);
-						cm.css('left',e.pageX);
-						cm.show();
-						selectNode(j(this).children('.quiLabelTree'));
-						j(document).oneTime(30, 'contextMenu', function(){
-							contextMenu=true;
-						});
-					};
-				});
-				
-				
-			}*/
+			}
 		})
-		// Вызов контекстного меню
-		.live('contextmenu',function(e){
-			
-			j(this).add('UL.contextMenu');
-			
-			cm = j('#'+options.id+'ContextMenu');
-			cm.css('top',e.pageY);
-			cm.css('left',e.pageX);
-			cm.show();
-			selectNode(j(this).children('.quiLabelTree'));
-			
-			$(document).one('click',function(){
-				cm.hide();
-			});
-			
-			return false;
-		});
-		
 		
 		
 		// Реализация Перетаскивания элемента
@@ -423,14 +564,8 @@ jQuery.tree = function(options){
 			status = '';
 		});
 
-		j(document).mouseup(function(){
-			if (contextMenu) {
-				j('#' + options.id + 'ContextMenu').hide();
-				contextMenu = false;
-			}
-		})
 		// Конец перетаскивания
-		.mouseup(function(){
+		j(document).mouseup(function(){
 			// Останавливаем таймер "Перетаскивание"
 			j(document).stopTime('startDrag');
 			// Если перетаскивание уже было начато

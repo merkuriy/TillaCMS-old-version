@@ -3,9 +3,17 @@
 /*******************************/
 
 /* Стили основного контейнера */
+.quiTreeContainer, .quiTreeContainer:link,.quiTreeContainer:active,.quiTreeContainer:visited,.quiTreeContainer:hover{
+	background-color:	#fff;
+	margin:				0px;
+	padding:			0px;
+	border:				none;
+	text-align:			left;
+	color:				#000;
+}
 .quiTree{
 	background-color:	#fff;
-	border:				1px solid #99bbe8;
+	border:				1px solid #C8C8C8;
 	border-top:			none;
 
 	-moz-user-select:	none;
@@ -34,7 +42,7 @@
 .quiTreeRL{
 	background-color:	#f5f9fe;
 	overflow:			hidden;
-	border:				1px solid #99bbe8;
+	border:				1px solid #C8C8C8;
 	border-bottom:		none;
 	border-right:		none;
 	height:				20px;
@@ -110,7 +118,8 @@
 	border:				1px dotted #99bbe8;
 }
 .quiLabelTree.active{
-	border:				1px solid #99bbe8;
+	border:				1px solid #C8C8C8;
+	background-color:	#EEEEEE;
 }
 .quiDraggedTree{
 	filter:				alpha(opacity=80);
@@ -142,6 +151,8 @@
 	padding:			0px;
 	margin:				0px;
 	display:			none;
+	text-align:			left;
+	font-size:			11px;
 }
 
 .quiTreeCM LI {
@@ -201,4 +212,19 @@
 }
 .quiTreeCM LI.openCM span {
 	background-image:	url(../resources/tree/cm.open.png);
+}
+
+
+.quiTreeContainer.focus .quiTree{
+	border:				1px solid #99bbe8;
+	border-top:			none;
+}
+.quiTreeContainer.focus .quiTreeHead .quiTreeRL{
+	border:				1px solid #99bbe8;
+	border-bottom:		none;
+	border-right:		none;
+}
+.quiTreeContainer.focus .quiLabelTree.active{
+	border:				1px solid #99bbe8;
+	background-color:	#F5F9FE;
 }
