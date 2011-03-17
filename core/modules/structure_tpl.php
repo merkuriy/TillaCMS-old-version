@@ -2,7 +2,7 @@
 
 /*
  * This file is part of the Tilla.
- * (c) 2009-2010 Uriy MerkUriy Efremochkin <efremochkin@uriy.me>
+ * (c) 2009-2011 Uriy MerkUriy Efremochkin <efremochkin@uriy.me>
  */	
 
 /**
@@ -44,7 +44,7 @@ class modules_structure_tpl
 			modules_structure_tpl::newTplLevel($tplType, $tplParam);
 			
 			
-			if (!($id_section>=1) and ( 
+			if (!($idSection>=1) and ( 
 				$system['tplLevel'][ modules_structure_tpl::getTplLevelLast()-1 ]['tplType']=='table' or
 				$system['tplLevel'][ modules_structure_tpl::getTplLevelLast()-1 ]['tplType']=='line' ))
 			{
@@ -688,8 +688,6 @@ class modules_structure_tpl
 		$tplTextPos += 2;
 		$temp_pos = $tplTextPos; //начальная позиция A или B
 		
-		$activePos = 0;
-		
 		while ($tplTextPos < $tplTextLength)
 		{
 			if ($tplText[$tplTextPos] == '}' && $tplText[$tplTextPos+1] == '}')
@@ -702,7 +700,6 @@ class modules_structure_tpl
 			}
 			
 			$tplTextPos++;
-			$activePos = $tplTextPos-$temp_pos;
 		}
 		
 	}
